@@ -14,6 +14,10 @@ const defaultStage = evolutionStages.find((s) => s.id === 'human') ?? evolutionS
 const defaultCell = intersections[defaultFn.id]?.[defaultStage.id];
 const defaultKicker = `${ui.kickerIntersection} · ${defaultFn.label} × ${defaultStage.title}`;
 const defaultTitle = defaultCell?.headline ?? '';
+const frameworkPayload = JSON.stringify({ functions, evolutionStages, intersections, ui }).replace(
+  /</g,
+  '\\u003c'
+);
 ---
 
 <div class="fw-model">
@@ -184,12 +188,39 @@ const defaultTitle = defaultCell?.headline ?? '';
     <div class="fw-panel-detail fw-panel-detail--explore" id="fw-explore-detail" role="region" aria-live="polite">
       <div class="fw-detail-kicker" id="fw-detail-kicker">{defaultKicker}</div>
       <h3 class="fw-detail-title" id="fw-detail-title">{defaultTitle}</h3>
-      <div class="fw-detail-content" id="fw-detail-content"></div>
+      <div class="fw-detail-content" id="fw-detail-content">
+        {defaultCell?.operations?.length ? (
+          <div class="fw-detail-block">
+            <h4>{ui.howWorkRuns}</h4>
+            <ul>
+              {defaultCell.operations.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+        {defaultCell?.metrics?.length ? (
+          <div class="fw-detail-block">
+            <h4>{ui.metricsToWatch}</h4>
+            <ul>
+              {defaultCell.metrics.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </div>
     </div>
   </section>
 </div>
 
-<script define:vars={{ functions, evolutionStages, intersections, ui }}>
+<script id="fw-framework-data" type="application/json" set:html={frameworkPayload} />
+
+<script>
+  const dataEl = document.getElementById('fw-framework-data');
+  if (!dataEl?.textContent) throw new Error('Framework data missing');
+  const { functions, evolutionStages, intersections, ui } = JSON.parse(dataEl.textContent);
+
   const state = {
     fn: 'sales',
     stage: 'human',

@@ -87,12 +87,14 @@ const research = all.filter((e) => e.data.showInResearch !== false).slice(0, 6);
   </a>
 </section>
 
-<section class="pub-exploring wide" id="exploring">
-  <div class="pub-sec-head">
-    <h2>{copy.home.exploring.title}</h2>
-    <p class="pub-sec-sub">{copy.home.exploring.sub}</p>
+<section class="pub-exploring" id="exploring">
+  <div class="wide">
+    <div class="pub-sec-head">
+      <h2>{copy.home.exploring.title}</h2>
+      <p class="pub-sec-sub">{copy.home.exploring.sub}</p>
+    </div>
   </div>
-  <div class="pub-explore-carousel-wrap">
+  <div class="wide pub-explore-carousel-wrap">
     <div class="pub-explore-carousel" data-hscroll-carousel data-hscroll-card=".pub-explore-card">
       <button
         type="button"
@@ -257,17 +259,19 @@ const research = all.filter((e) => e.data.showInResearch !== false).slice(0, 6);
   })();
 </script>
 
-<section class="pub-framework-teaser wide" id="framework">
-  <a class="pub-framework-card" href={frameworksPath(locale)}>
-    <div class="pub-framework-copy">
-      <div class="pub-sec-head">
-        <h2>{copy.home.framework.title}</h2>
-        <p class="pub-sec-sub">{copy.home.framework.sub}</p>
+<section class="pub-framework-teaser" id="framework">
+  <div class="wide">
+    <a class="pub-framework-card" href={frameworksPath(locale)}>
+      <div class="pub-framework-copy">
+        <div class="pub-sec-head">
+          <h2>{copy.home.framework.title}</h2>
+          <p class="pub-sec-sub">{copy.home.framework.sub}</p>
+        </div>
+        <span class="pub-framework-link">{copy.home.framework.cta}</span>
       </div>
-      <span class="pub-framework-link">{copy.home.framework.cta}</span>
-    </div>
-    <FrameworkTeaserVisual />
-  </a>
+      <FrameworkTeaserVisual />
+    </a>
+  </div>
 </section>
 
 <FieldNotes locale={locale} />

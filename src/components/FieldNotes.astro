@@ -8,15 +8,17 @@ const locale = Astro.props.locale ?? 'en';
 const copy = t(locale);
 ---
 <section class="pub-field-notes" id="field-notes">
-  <div class="pub-field-notes-inner wrap">
-    <p class="pub-field-notes-eyebrow">{copy.fieldNotes.eyebrow}</p>
-    <h2>{copy.fieldNotes.title}</h2>
-    <p class="pub-field-notes-lede">{copy.fieldNotes.body}</p>
-    <p class="pub-field-notes-sub">{copy.fieldNotes.sub}</p>
-    <form data-success={copy.fieldNotes.success} onsubmit="return subscribe(event)">
-      <input type="email" id="email" placeholder={copy.fieldNotes.placeholder} required />
-      <button type="submit">{copy.fieldNotes.subscribe}</button>
-    </form>
-    <p class="pub-field-notes-fine" id="newsfine">{copy.fieldNotes.fine}</p>
+  <div class="wrap">
+    <div class="pub-field-notes-panel">
+      <p class="pub-field-notes-eyebrow">{copy.fieldNotes.eyebrow}</p>
+      <h2>{copy.fieldNotes.title}</h2>
+      <p class="pub-field-notes-lede">{copy.fieldNotes.body}</p>
+      <p class="pub-field-notes-sub">{copy.fieldNotes.sub}</p>
+      <form data-success={copy.fieldNotes.success} onsubmit="return subscribe(event)">
+        <input type="email" id="email" placeholder={copy.fieldNotes.placeholder} required />
+        <button type="submit">{copy.fieldNotes.subscribe}</button>
+      </form>
+      <p class="pub-field-notes-fine" id="newsfine">{copy.fieldNotes.fine}</p>
+    </div>
   </div>
 </section>

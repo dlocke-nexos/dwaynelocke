@@ -1,7 +1,7 @@
 ---
 import LanguagePicker from './LanguagePicker.astro';
 import ThemeToggle from './ThemeToggle.astro';
-import { t, type Locale, homePath, anchorPath } from '../i18n';
+import { t, type Locale, homePath, anchorPath, frameworksPath } from '../i18n';
 
 interface Props {
   locale?: Locale;
@@ -25,7 +25,7 @@ const homeSection = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
 const links = [
   { href: intro, label: copy.nav.introduction },
   { href: homeSection('research'), label: copy.nav.research },
-  { href: homeSection('framework'), label: copy.nav.frameworks },
+  { href: frameworksPath(locale), label: copy.nav.frameworks },
 ];
 ---
 <nav class="pub-nav" data-nav>

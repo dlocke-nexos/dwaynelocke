@@ -8,8 +8,8 @@ const locale = Astro.props.locale ?? 'en';
 const copy = t(locale);
 const home = homePath(locale);
 ---
-<section class="follow-strip wide">
-  <div class="follow-strip-inner">
+<section class="follow-strip">
+  <div class="follow-strip-inner wrap">
     <p>{copy.followStrip.body}</p>
     <a href={`${home}#field-notes`} class="btn ghost">{copy.followStrip.cta}</a>
   </div>
