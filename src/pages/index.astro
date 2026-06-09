@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Newsletter from '../components/Newsletter.astro';
+import PersonPlaceholder from '../components/PersonPlaceholder.astro';
+
+// All essays, ordered. The anchor essay (lowest order, not draft) is rendered
+// in full on the homepage. Drafts show in the list as "coming soon".
+const all = (await getCollection('essays')).sort(
+  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+);
+const anchor = all.find((e) => !e.data.draft);
+if (!anchor) throw new Error('No published anchor essay found in src/content/essays/.');
+const { Content } = await anchor.render();
+---
+<BaseLayout
+  title="Dwayne Locke — Watching organizations evolve, in the open"
+>
+  <div id="top" class="wrap">
+    <header class="mast mast--author">
+      <div class="author-thumb">
+        <PersonPlaceholder size="thumb" />
+      </div>
+      <div class="eyebrow">Notes on how organizations evolve</div>
+      <h1>I spent 15 years watching organizations adopt cloud software. Now I'm watching them <em>adopt AI</em>.</h1>
+      <p class="standfirst">Working through what changes when technology stops documenting work and starts performing it — in the open, not as an expert with all the answers.</p>
+      <p class="byline">By Dwayne Locke</p>
+    </header>
+  </div>
+
+  <article class="wrap essay">
+    <Content />
+  </article>
+
+  <Newsletter />
+
+  <!-- the writing -->
+  <section class="more wide" id="essays">
+    <div class="sec-eyebrow">The writing</div>
+    <div class="plist">
+      {all.map((e) =>
+        e.data.draft ? (
+          <a class="pitem soon">
+            <div class="pt">{e.data.title}</div>
+            <div class="pd">{e.data.description}</div>
+          </a>
+        ) : (
+          <a class="pitem live" href={e.slug === anchor.slug ? '/' : `/essays/${e.slug}/`}>
+            <div class="pt">{e.data.title}</div>
+            <div class="pd">{e.data.description}</div>
+          </a>
+        )
+      )}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,17 @@
+---
+// Field Notes signup. Handler `subscribe()` is defined in Assessment.astro.
+---
+<section class="pub-field-notes" id="field-notes">
+  <div class="pub-field-notes-inner wrap">
+    <h2>Field Notes</h2>
+    <p>
+      Weekly observations on AI, automation, digital workers, organizational design,
+      and the future operating system of business.
+    </p>
+    <form onsubmit="return subscribe(event)">
+      <input type="email" id="email" placeholder="you@company.com" required />
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="pub-field-notes-fine" id="newsfine">Roughly weekly. Unsubscribe anytime.</p>
+  </div>
+</section>

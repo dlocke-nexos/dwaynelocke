@@ -1,0 +1,191 @@
+---
+import { getCollection } from 'astro:content';
+import HomeLayout from '../layouts/HomeLayout.astro';
+import FieldNotes from '../components/FieldNotes.astro';
+import HeroCollage from '../components/HeroCollage.astro';
+import ExploreVisual from '../components/ExploreVisual.astro';
+import ResearchVisual from '../components/ResearchVisual.astro';
+import PersonPlaceholder from '../components/PersonPlaceholder.astro';
+
+const all = (await getCollection('essays')).sort(
+  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+);
+const anchor = all.find((e) => !e.data.draft);
+if (!anchor) throw new Error('No published anchor essay found in src/content/essays/.');
+
+function readTime(body: string): number {
+  const words = body.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function articleHref(slug: string): string {
+  return slug === anchor!.slug ? '/' : `/essays/${slug}/`;
+}
+
+// Ordered as a journey: learn → design → build → orchestrate → mature
+const exploring = [
+  {
+    step: 1,
+    id: 'enterprise-lessons' as const,
+    title: 'Enterprise Lessons',
+    body: 'What small businesses can learn from large transformations.',
+    href: '#research-watching-organizations-adopt-ai',
+  },
+  {
+    step: 2,
+    id: 'organizational-design' as const,
+    title: 'Organizational Design',
+    body: 'How operating models change when AI joins the workforce.',
+    href: '#research-ai-deployment-model',
+  },
+  {
+    step: 3,
+    id: 'digital-workers' as const,
+    title: 'Digital Workers',
+    body: 'How businesses create repeatable digital labor.',
+    href: '#research-digital-worker',
+  },
+  {
+    step: 4,
+    id: 'agentic-workflows' as const,
+    title: 'Agentic Workflows',
+    body: 'How AI agents collaborate across business processes.',
+    href: '#research-digital-worker',
+  },
+  {
+    step: 5,
+    id: 'ai-maturity' as const,
+    title: 'Capability Evolution',
+    body: 'How capability migrates out of people — each layer at its own pace.',
+    href: '/frameworks',
+  },
+];
+
+const research = all.slice(0, 6);
+---
+<HomeLayout title="Dwayne Locke — How organizations scale in the age of AI">
+  <section class="pub-hero wide" id="top">
+    <div class="pub-hero-inner">
+      <div class="pub-hero-copy">
+        <h1>How organizations scale in the age of AI.</h1>
+        <p class="pub-hero-lede">
+          For the last 15 years, I&rsquo;ve helped organizations adopt cloud software.
+        </p>
+        <p class="pub-hero-sub">
+          Now I&rsquo;m studying how AI, automation, digital workers, and new operating models
+          are changing the way businesses grow.
+        </p>
+        <div class="pub-hero-ctas">
+          <a class="btn" href="/">Read the Introduction</a>
+          <a class="btn ghost" href="#research">Explore the Research</a>
+        </div>
+      </div>
+      <HeroCollage />
+    </div>
+  </section>
+
+  <section class="pub-start wide">
+    <div class="pub-sec-head">
+      <h2>Start Here</h2>
+    </div>
+    <a class="pub-featured pub-featured--thumb" href="/">
+      <div class="pub-featured-visual pub-featured-visual--photo">
+        <div class="pub-photo-deco" aria-hidden="true">
+          <svg viewBox="0 0 400 280" fill="none" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="280" fill="var(--paper-2)" />
+            <circle cx="320" cy="60" r="80" fill="var(--accent-bg)" opacity="0.7" />
+            <circle cx="60" cy="220" r="60" fill="var(--good)" opacity="0.1" />
+            <path d="M40 140 L360 140" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="6 4" />
+            <path d="M200 40 L200 240" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="6 4" />
+            <rect x="280" y="180" width="72" height="48" rx="8" fill="var(--card)" stroke="var(--accent-soft)" stroke-width="0.5" opacity="0.6" />
+            <rect x="48" y="48" width="56" height="40" rx="6" fill="var(--accent-bg)" stroke="var(--line)" stroke-width="0.5" opacity="0.5" />
+          </svg>
+        </div>
+        <div class="pub-photo-wrap">
+          <PersonPlaceholder size="featured" />
+        </div>
+        <div class="pub-featured-thumb-tag">Introduction</div>
+      </div>
+      <div class="pub-featured-body">
+        <p class="pub-featured-label">Featured article</p>
+        <h3>{anchor.data.title}</h3>
+        <p class="pub-featured-excerpt">{anchor.data.description}</p>
+        <span class="pub-featured-link">Read Article &rarr;</span>
+      </div>
+    </a>
+  </section>
+
+  <section class="pub-exploring wide" id="exploring">
+    <div class="pub-sec-head">
+      <h2>Areas I&rsquo;m Exploring</h2>
+      <p class="pub-sec-sub">
+        A progression &mdash; from enterprise lessons through organizational design,
+        digital workers, agentic workflows, and capability evolution.
+      </p>
+    </div>
+    <div class="pub-explore-grid">
+      {exploring.map((area) => (
+        <a class="pub-explore-card" href={area.href} id={area.id}>
+          <div class="pub-explore-step">Step {area.step}</div>
+          <ExploreVisual topic={area.id} />
+          <div class="pub-explore-body">
+            <h3>{area.title}</h3>
+            <p>{area.body}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="pub-research wide" id="research">
+    <div class="pub-sec-head">
+      <h2>Latest Research</h2>
+      <p class="pub-sec-sub">Essays in the order I&rsquo;m working through them.</p>
+    </div>
+    <div class="pub-research-grid">
+      {research.map((entry) => (
+        entry.data.draft ? (
+          <div class="pub-research-card soon" id={`research-${entry.slug}`}>
+            <ResearchVisual slug={entry.slug} draft />
+            <div class="pub-research-body">
+              <p class="pub-research-meta">Coming soon</p>
+              <h3>{entry.data.title}</h3>
+              <p class="pub-research-excerpt">{entry.data.description}</p>
+            </div>
+          </div>
+        ) : (
+          <a class="pub-research-card" href={articleHref(entry.slug)} id={`research-${entry.slug}`}>
+            <ResearchVisual slug={entry.slug} />
+            <div class="pub-research-body">
+              <p class="pub-research-meta">
+                {formatDate(entry.data.pubDate)} · {readTime(entry.body)} min read
+              </p>
+              <h3>{entry.data.title}</h3>
+              <p class="pub-research-excerpt">{entry.data.description}</p>
+              <span class="pub-research-link">Read &rarr;</span>
+            </div>
+          </a>
+        )
+      ))}
+    </div>
+  </section>
+
+  <section class="pub-framework-teaser wide" id="framework">
+    <div class="pub-sec-head">
+      <h2>Capability Framework</h2>
+      <p class="pub-sec-sub">
+        Structure and evolution &mdash; two independent dimensions. Explore function &times; stage
+        to see how capability digitizes department by department.
+      </p>
+    </div>
+    <a class="pub-framework-link" href="/frameworks">
+      Open the framework &rarr;
+    </a>
+  </section>
+
+  <FieldNotes />
+</HomeLayout>

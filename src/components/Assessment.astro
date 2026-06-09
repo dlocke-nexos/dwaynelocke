@@ -1,0 +1,143 @@
+---
+// Business-dependency assessment — a single interactive island.
+// DATA-DRIVEN: trades / departments / functions are data objects below.
+// To add a trade or question, edit the data — never hardcode UI per case.
+// Score is a DEPENDENCY score: higher = more depends on the owner = worse.
+//
+// Included site-wide via BaseLayout, so any `onclick="openAssessment()"`
+// trigger (nav, footer, mid-essay CTA) opens it.
+---
+<!-- assessment overlay -->
+<div class="overlay" id="overlay">
+  <div class="ov-top">
+    <div class="logo">Dwayne<span style="color:var(--accent)">Locke</span></div>
+    <button class="ov-close" onclick="closeAssessment()">Close ✕</button>
+  </div>
+  <div class="ov-inner">
+    <div class="prog hide" id="prog"><i id="bar"></i></div>
+    <div class="stage" id="stage"></div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.30.0/tabler-icons.min.css" />
+
+<script is:inline>
+/* ---- Newsletter signup (placeholder) ----
+   TODO(email): wire this to your email provider's form/embed or API endpoint.
+   Right now it only shows a confirmation message; it does NOT store the email. */
+function subscribe(e){
+  e.preventDefault();
+  document.getElementById('newsfine').textContent="Thanks — you're on the list. (TODO: wire this form to your email provider.)";
+  document.getElementById('email').value="";
+  return false;
+}
+
+var TRADES={
+ services:{label:"Agency / marketing firm",icon:"ti-briefcase",lead:"new inquiries",cust:"clients"},
+ realestate:{label:"Real estate",icon:"ti-home",lead:"property inquiries",cust:"buyers and sellers"},
+ proserv:{label:"Professional services",icon:"ti-id-badge",lead:"new inquiries",cust:"clients"},
+ home:{label:"Home services",icon:"ti-tools",lead:"service calls",cust:"clients"},
+ health:{label:"Healthcare",icon:"ti-heart",lead:"patient inquiries",cust:"patients"},
+ ecom:{label:"E-commerce",icon:"ti-shopping-cart",lead:"customer questions",cust:"customers"},
+ other:{label:"Something else",icon:"ti-building-store",lead:"leads",cust:"customers"}
+};
+function T(){return TRADES[trade]||TRADES.other;}
+function sing(s){return s.replace(/s$/,'');}
+var DEPTS=[
+ {name:"Getting New Customers",sub:"How you bring people in",fns:[
+   {icon:"ti-edit",sev:2,label:function(){return "Writing posts and content"},win:function(){return "Content keeps going out"}},
+   {icon:"ti-message-2",sev:3,label:function(){return "Answering "+T().lead},win:function(){return "Every "+sing(T().lead)+" gets answered fast"}},
+   {icon:"ti-send",sev:3,label:function(){return "Following up with "+T().lead},win:function(){return "Every lead gets followed up"}},
+   {icon:"ti-file-text",sev:3,label:function(){return "Writing proposals and quotes"},win:function(){return "Every proposal gets delivered"}}]},
+ {name:"Serving Customers",sub:"How you take care of people",fns:[
+   {icon:"ti-rocket",sev:2,label:function(){return "Getting new "+T().cust+" started"},win:function(){return "Every "+sing(T().cust)+" gets onboarded"}},
+   {icon:"ti-lifebuoy",sev:2,label:function(){return "Answering "+T().cust+"' questions"},win:function(){return "Every question gets answered"}},
+   {icon:"ti-mood-smile",sev:1,label:function(){return "Asking "+T().cust+" for feedback"},win:function(){return "Feedback comes in on its own"}}]},
+ {name:"Getting Paid",sub:"How money comes in",fns:[
+   {icon:"ti-file-invoice",sev:3,label:function(){return "Sending invoices"},win:function(){return "Every invoice gets sent on time"}},
+   {icon:"ti-cash",sev:3,label:function(){return "Chasing payment"},win:function(){return "Every late payment gets chased"}},
+   {icon:"ti-calculator",sev:2,label:function(){return "Keeping the books"},win:function(){return "Books stay current"}}]},
+ {name:"Building Your Team",sub:"How you grow your people",fns:[
+   {icon:"ti-clipboard-text",sev:1,label:function(){return "Writing job posts"},win:function(){return "Roles get posted on time"}},
+   {icon:"ti-users",sev:1,label:function(){return "Screening applicants"},win:function(){return "Applicants get screened"}}]}
+];
+var ENDS=["All me","Mostly me","Half","Mostly automated","Runs without me"];
+var trade=null, di=0, vals={};
+DEPTS.forEach(function(d,i){d.fns.forEach(function(f,j){vals[i+'-'+j]=3;});});
+var stage,bar,prog,overlay;
+function setBar(s,t){bar.style.width=Math.round(s/t*100)+'%';}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+
+function showTrade(){
+ prog.classList.remove('hide');setBar(0,DEPTS.length+2);
+ var h='<div class="kicker">A few quick questions</div><div class="aq">First, what kind of business do you run?</div><div class="asub">So every question fits what you actually do.</div>';
+ Object.keys(TRADES).forEach(function(k){h+='<button class="tradebtn" onclick="A.pickTrade(\''+k+'\')"><i class="ti '+TRADES[k].icon+'"></i>'+TRADES[k].label+'</button>';});
+ stage.innerHTML=h;
+}
+function showDept(){
+ prog.classList.remove('hide');setBar(di+1,DEPTS.length+2);
+ var d=DEPTS[di];
+ var h='<div class="kicker">'+(di+1)+' of '+DEPTS.length+'</div><div class="aq">'+d.name+'</div><div class="asub">'+d.sub+'. How much still runs through you?</div>';
+ d.fns.forEach(function(f,j){var v=vals[di+'-'+j];
+  h+='<div class="fn"><div class="nm">'+f.label()+'</div><input type="range" min="1" max="5" step="1" value="'+v+'" oninput="A.setv('+di+','+j+',this.value)"><div class="ends"><span>'+ENDS[0]+'</span><span>'+ENDS[4]+'</span></div><div class="now" id="now-'+di+'-'+j+'">'+ENDS[v-1]+'</div></div>';});
+ h+='<div class="navrow"><button class="bk" onclick="A.prev()">'+(di===0?'‹ Business type':'‹ Previous')+'</button><button class="nxt" onclick="A.nextd()">'+(di===DEPTS.length-1?'See my results':'Next ›')+'</button></div>';
+ stage.innerHTML=h;
+}
+function ranked(){var items=[];DEPTS.forEach(function(d,i){d.fns.forEach(function(f,j){var gap=5-vals[i+'-'+j];if(gap>0)items.push({impact:gap*f.sev,gap:gap,f:f});});});items.sort(function(a,b){return b.impact-a.impact;});return items;}
+function depScore(){var mx=DEPTS.reduce(function(s,d){return s+d.fns.length*4;},0),tot=0;DEPTS.forEach(function(d,i){d.fns.forEach(function(f,j){tot+=5-vals[i+'-'+j];});});return Math.round(tot/mx*100);}
+
+function showResults(){
+ setBar(DEPTS.length+1,DEPTS.length+2);
+ var dep=depScore();
+ var tiers=[["Independent",0,25],["Scalable",26,50],["Owner-reliant",51,75],["Owner-dependent",76,100]];
+ var tier=tiers[0];for(var k=0;k<tiers.length;k++){if(dep>=tiers[k][1]&&dep<=tiers[k][2]){tier=tiers[k];break;}}
+ var items=ranked();
+ var msg=dep>=50?"A lot still runs through you. That's where growth keeps creating more work.":dep>=25?"You've handed off a fair amount. A few things still run through you.":"Most of the work runs without you.";
+ var h='<div class="scorewrap"><div class="kicker">How much still runs through you</div><div class="score">'+dep+'%</div><div class="tier">'+tier[0]+'</div><div class="scorelbl">'+msg+'</div></div>';
+ h+='<div class="ladder">';for(var t=0;t<tiers.length;t++){h+='<div class="rung'+(tiers[t][0]===tier[0]?' on':'')+'">'+tiers[t][1]+'-'+tiers[t][2]+'%<br>'+tiers[t][0]+'</div>';}h+='</div>';
+ if(items.length){
+  var top3=items.slice(0,3);
+  var names=top3.map(function(it){return it.f.label().toLowerCase();});
+  var nameStr=names.length===1?names[0]:names.slice(0,-1).join(', ')+', and '+names[names.length-1];
+  h+='<div class="finding"><div class="findhead">What stands out</div><div class="findbody">'+cap(nameStr)+' pull the most work back onto you right now.</div></div>';
+  h+='<div class="finding"><div class="findhead">Why it matters</div><div class="findbody">As the business grows, these are the things most likely to pile up or land back on your plate.</div></div>';
+  h+='<div class="finding"><div class="findhead">Where to start</div><div class="findbody">Begin with '+top3[0].f.label().toLowerCase()+'. Understanding how it works today is the first step toward handing it off.</div></div>';
+  h+='<div class="vision"><div class="vt">What changes when these run on their own:</div>';
+  items.slice(0,4).forEach(function(it){h+='<div class="vi"><i class="ti ti-circle-check"></i>'+it.f.win()+'</div>';});
+  h+='</div>';
+  h+='<button class="fullbtn" onclick="A.toBlueprint()">See where to start</button>';
+ } else {
+  h+='<div class="finding"><div class="findhead">What stands out</div><div class="findbody">Very little still runs through you. The work is largely handled without your direct involvement.</div></div>';
+ }
+ h+='<div style="text-align:center;margin-top:16px"><button class="bk" onclick="A.restart()">Start over</button></div>';
+ stage.innerHTML=h;
+}
+function showBlueprint(){
+ setBar(DEPTS.length+2,DEPTS.length+2);
+ var dep=depScore(), items=ranked(), top=items.slice(0,3);
+ var h='<div class="kicker">Where to start</div><div class="aq">What to understand first</div><div class="asub">Taken in order, each one removes the most work for the least effort once you understand how it runs today.</div>';
+ h+='<div class="gapbar"><div class="fill" style="width:0%" id="gf"></div><div class="target" style="left:20%"></div></div><div class="gaplbl"><span>Runs through you today: '+dep+'%</span><span>A healthy spot: under 20%</span></div>';
+ top.forEach(function(it,idx){h+='<div class="step"><span class="n">'+(idx+1)+'</span><div class="b"><b>'+it.f.label()+'</b><span>'+it.f.win()+'</span></div></div>';});
+ h+='<div class="vision" style="margin-top:8px"><div class="vt">Stay with the exploration</div><div class="vi" style="display:block;font-size:14px;color:var(--ink-soft)">This is the work I\'m writing about — understanding what depends on you, then handing it off to systems. The newsletter follows it as it unfolds.</div></div>';
+ h+='<button class="fullbtn" onclick="A.plan()">Get my results &amp; follow along</button>';
+ h+='<div style="text-align:center;margin-top:16px"><button class="bk" onclick="A.backResults()">‹ Back to results</button></div>';
+ stage.innerHTML=h;
+ setTimeout(function(){var g=document.getElementById('gf');if(g)g.style.width=dep+'%';},80);
+}
+var A={
+ pickTrade:function(k){trade=k;di=0;showDept();},
+ setv:function(i,j,v){vals[i+'-'+j]=+v;var el=document.getElementById('now-'+i+'-'+j);if(el)el.textContent=ENDS[v-1];},
+ nextd:function(){if(di<DEPTS.length-1){di++;showDept();}else showResults();},
+ prev:function(){if(di===0)showTrade();else{di--;showDept();}},
+ toBlueprint:function(){showBlueprint();},
+ backResults:function(){showResults();},
+ restart:function(){trade=null;di=0;DEPTS.forEach(function(d,i){d.fns.forEach(function(f,j){vals[i+'-'+j]=3;});});showTrade();},
+ /* ---- Assessment results capture (placeholder) ----
+    TODO(email): capture the visitor's email here, send them their results,
+    and add them to the SAME email provider as the newsletter. Replace this alert. */
+ plan:function(){alert("TODO: capture email for the results report, then wire to your newsletter provider.");}
+};
+function openAssessment(){overlay=document.getElementById('overlay');stage=document.getElementById('stage');bar=document.getElementById('bar');prog=document.getElementById('prog');overlay.classList.add('on');document.body.style.overflow='hidden';showTrade();window.scrollTo(0,0);}
+function closeAssessment(){overlay.classList.remove('on');document.body.style.overflow='';}
+window.A=A;window.openAssessment=openAssessment;window.closeAssessment=closeAssessment;window.subscribe=subscribe;
+</script>

@@ -1,0 +1,346 @@
+---
+import {
+  structureLayers,
+  functions,
+  evolutionStages,
+  intersections,
+} from './framework-data';
+---
+
+<div class="fw-model">
+  <div class="fw-thesis">
+    <p class="fw-thesis-lead">
+      Two dimensions, independent of each other. They don&rsquo;t stack into a single ladder.
+    </p>
+    <p class="fw-thesis-body">
+      <strong>Structure</strong> is what the organization is made of.
+      <strong>Evolution</strong> is where capability migrates as each layer matures.
+      Hover a function for purpose and activities. Hover a stage for where capability lives.
+      Hover the <em>intersection</em> to see how a specific department operates at a specific stage.
+    </p>
+  </div>
+
+  <div class="fw-tabs" role="tablist" aria-label="Framework dimensions">
+    <button type="button" class="fw-tab active" data-tab="structure" role="tab" aria-selected="true" id="fw-tab-structure">
+      <span class="fw-tab-axis">Dimension 1</span>
+      <span class="fw-tab-title">Structure</span>
+      <span class="fw-tab-sub">What the org is made of</span>
+    </button>
+    <button type="button" class="fw-tab" data-tab="evolution" role="tab" aria-selected="false" id="fw-tab-evolution">
+      <span class="fw-tab-axis">Dimension 2</span>
+      <span class="fw-tab-title">Evolution</span>
+      <span class="fw-tab-sub">Where capability migrates</span>
+    </button>
+  </div>
+
+  <section class="fw-panel fw-panel--structure active" id="fw-panel-structure" role="tabpanel" aria-labelledby="fw-tab-structure">
+    <div class="fw-structure-meta">
+      <p class="fw-structure-rise"><span aria-hidden="true">&uarr;</span> Capability rises through every layer</p>
+      <p class="fw-structure-stable">Functions stay stable — everything above them transforms</p>
+    </div>
+    <div class="fw-structure">
+      <div class="fw-spine" aria-label="Governance and data">
+        <span class="fw-spine-label">Governance &amp; data</span>
+        <span class="fw-spine-sub">Policies, controls, decision rights</span>
+      </div>
+      <div class="fw-stack">
+        {structureLayers.map((layer) => (
+          <button
+            type="button"
+            class={`fw-stack-layer fw-stack-layer--${layer.id}`}
+            data-kind="structure"
+            data-id={layer.id}
+            data-title={layer.title}
+            data-body={layer.body}
+          >
+            {layer.split ? (
+              <div class="fw-split">
+                <div class="fw-split-half">
+                  <strong>{layer.left.label}</strong>
+                  <span>{layer.left.sub}</span>
+                </div>
+                <div class="fw-split-half">
+                  <strong>{layer.right.label}</strong>
+                  <span>{layer.right.sub}</span>
+                </div>
+              </div>
+            ) : (
+              <>
+                <strong>{layer.title}</strong>
+                <span class="fw-stack-sub">{layer.sub}</span>
+              </>
+            )}
+          </button>
+        ))}
+        <div class="fw-stack-layer fw-stack-layer--functions" id="fw-functions-layer">
+          <div class="fw-functions-row">
+            <span class="fw-functions-label">Functions</span>
+            <div class="fw-pills" role="group" aria-label="Business functions">
+              {functions.map((fn, i) => (
+                <button
+                  type="button"
+                  class={`fw-pill fw-pill--fn${i === 1 ? ' active' : ''}`}
+                  data-kind="function"
+                  data-id={fn.id}
+                >
+                  {fn.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fw-panel fw-panel--evolution" id="fw-panel-evolution" role="tabpanel" aria-labelledby="fw-tab-evolution" hidden>
+    <div class="fw-evolution-intro">
+      <p>
+        Last 30 years: digitize <em>information</em>.
+        Next 30 years: digitize <em>capability</em>.
+        The human role shifts from doing the work to governing it.
+      </p>
+    </div>
+    <p class="fw-capability-heading">Where capability sits at each stage</p>
+    <div class="fw-timeline" role="tablist" aria-label="Capability evolution">
+      {evolutionStages.map((stage, i) => [
+        i > 0 ? <div class="fw-timeline-arrow" aria-hidden="true">&rarr;</div> : null,
+        <button
+          type="button"
+          class={`fw-stage fw-stage--${stage.id} fw-stage--pick${i === 0 ? ' active' : ''}`}
+          data-kind="stage"
+          data-id={stage.id}
+          role="tab"
+        >
+          <span class="fw-stage-num">Stage {stage.num}</span>
+          <strong>{stage.title}</strong>
+          <span class="fw-stage-sub">{stage.sub}</span>
+          <span class="fw-stage-cap">{stage.capability}</span>
+        </button>,
+      ])}
+    </div>
+  </section>
+
+  <section class="fw-explorer" aria-label="Function and stage explorer">
+    <p class="fw-explorer-hint">
+      Explore <strong>function &times; stage</strong> — the intersection is where the framework gets specific.
+    </p>
+    <div class="fw-explorer-rows">
+      <div class="fw-explorer-row">
+        <span class="fw-explorer-label">Function</span>
+        <div class="fw-pills fw-pills--explorer" role="group" aria-label="Select function">
+          {functions.map((fn, i) => (
+            <button type="button" class={`fw-pill fw-pill--fn${i === 1 ? ' active' : ''}`} data-kind="function" data-id={fn.id}>
+              {fn.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div class="fw-explorer-row">
+        <span class="fw-explorer-label">Stage</span>
+        <div class="fw-pills fw-pills--explorer" role="group" aria-label="Select stage">
+          {evolutionStages.map((stage, i) => (
+            <button type="button" class={`fw-pill fw-pill--stage${i === 0 ? ' active' : ''}`} data-kind="stage" data-id={stage.id}>
+              {stage.num}. {stage.capability}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="fw-matrix-wrap">
+      <p class="fw-matrix-label">Intersection grid — hover a cell</p>
+      <div class="fw-matrix" role="grid" aria-label="Function by stage intersection">
+        <div class="fw-matrix-head" role="row">
+          <div class="fw-matrix-corner" role="columnheader"></div>
+          {evolutionStages.map((stage) => (
+            <div class="fw-matrix-col-head" role="columnheader">{stage.capability}</div>
+          ))}
+        </div>
+        {functions.map((fn) => (
+          <div class="fw-matrix-row" role="row">
+            <div class="fw-matrix-row-label" role="rowheader">{fn.label}</div>
+            {evolutionStages.map((stage) => (
+              <button
+                type="button"
+                class="fw-matrix-cell"
+                role="gridcell"
+                data-kind="cell"
+                data-fn={fn.id}
+                data-stage={stage.id}
+                aria-label={`${fn.label} at ${stage.title}`}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="fw-panel-detail fw-panel-detail--explore" id="fw-explore-detail" role="region" aria-live="polite">
+      <div class="fw-detail-kicker" id="fw-detail-kicker">Intersection &middot; Sales &times; Human driven</div>
+      <h3 class="fw-detail-title" id="fw-detail-title">Knowledge lives in the salesperson.</h3>
+      <div class="fw-detail-content" id="fw-detail-content"></div>
+    </div>
+  </section>
+</div>
+
+<script define:vars={{ functions, evolutionStages, intersections, structureLayers }}>
+  const state = {
+    fn: 'sales',
+    stage: 'human',
+    mode: 'intersection',
+    structureTitle: '',
+    structureBody: '',
+  };
+
+  const fnMap = Object.fromEntries(functions.map((f) => [f.id, f]));
+  const stageMap = Object.fromEntries(evolutionStages.map((s) => [s.id, s]));
+
+  function setActive(kind, id, fnId, stageId) {
+    document.querySelectorAll(`[data-kind="${kind}"]`).forEach((el) => {
+      if (kind === 'cell') return;
+      const match =
+        kind === 'function'
+          ? el.dataset.id === id
+          : kind === 'stage'
+            ? el.dataset.id === id
+            : el.dataset.id === id;
+      el.classList.toggle('active', match);
+    });
+    if (fnId) {
+      document.querySelectorAll('[data-kind="function"]').forEach((el) => {
+        el.classList.toggle('active', el.dataset.id === fnId);
+      });
+    }
+    if (stageId) {
+      document.querySelectorAll('[data-kind="stage"]').forEach((el) => {
+        el.classList.toggle('active', el.dataset.id === stageId);
+      });
+    }
+    document.querySelectorAll('[data-kind="cell"]').forEach((el) => {
+      const on = el.dataset.fn === state.fn && el.dataset.stage === state.stage;
+      el.classList.toggle('active', on);
+    });
+    const fnLayer = document.getElementById('fw-functions-layer');
+    if (fnLayer) fnLayer.classList.toggle('active', state.mode === 'function' || state.mode === 'intersection');
+  }
+
+  function listHtml(title, items) {
+    if (!items?.length) return '';
+    return `<div class="fw-detail-block"><h4>${title}</h4><ul>${items.map((i) => `<li>${i}</li>`).join('')}</ul></div>`;
+  }
+
+  function renderDetail() {
+    const kicker = document.getElementById('fw-detail-kicker');
+    const title = document.getElementById('fw-detail-title');
+    const content = document.getElementById('fw-detail-content');
+
+    if (state.mode === 'structure') {
+      kicker.textContent = 'Structure';
+      title.textContent = state.structureTitle;
+      content.innerHTML = `<p class="fw-detail-body">${state.structureBody}</p>`;
+      return;
+    }
+
+    if (state.mode === 'intersection' && state.fn && state.stage) {
+      const fn = fnMap[state.fn];
+      const stage = stageMap[state.stage];
+      const cell = intersections[state.fn]?.[state.stage];
+      if (!fn || !stage || !cell) return;
+      kicker.textContent = `Intersection · ${fn.label} × ${stage.title}`;
+      title.textContent = cell.headline;
+      content.innerHTML =
+        listHtml('How work runs', cell.operations) +
+        listHtml('Metrics to watch', cell.metrics);
+      return;
+    }
+
+    if (state.mode === 'function' && state.fn) {
+      const fn = fnMap[state.fn];
+      if (!fn) return;
+      kicker.textContent = `Function · ${fn.label}`;
+      title.textContent = fn.purpose;
+      content.innerHTML =
+        `<p class="fw-detail-purpose"><strong>Purpose:</strong> ${fn.purpose}</p>` +
+        listHtml('Core activities', fn.activities) +
+        listHtml('Key metrics', fn.metrics);
+      return;
+    }
+
+    if (state.mode === 'stage' && state.stage) {
+      const stage = stageMap[state.stage];
+      if (!stage) return;
+      kicker.textContent = `Evolution · Stage ${stage.num}`;
+      title.textContent = stage.title;
+      content.innerHTML =
+        `<p class="fw-detail-body">${stage.capabilityLocation}</p>` +
+        listHtml('How work is performed', [stage.howWorkPerformed]) +
+        listHtml('What changes operationally', [stage.operationalChange]);
+    }
+  }
+
+  function showIntersection(fnId, stageId) {
+    state.fn = fnId;
+    state.stage = stageId;
+    state.mode = 'intersection';
+    setActive('cell', null, fnId, stageId);
+    renderDetail();
+  }
+
+  function showFunction(fnId) {
+    state.fn = fnId;
+    state.mode = 'function';
+    setActive('function', fnId, fnId, state.stage);
+    renderDetail();
+  }
+
+  function showStage(stageId) {
+    state.stage = stageId;
+    state.mode = 'stage';
+    setActive('stage', stageId, state.fn, stageId);
+    renderDetail();
+  }
+
+  function showStructure(el) {
+    state.mode = 'structure';
+    state.structureTitle = el.dataset.title || '';
+    state.structureBody = el.dataset.body || '';
+    document.querySelectorAll('[data-kind="structure"]').forEach((node) => {
+      node.classList.toggle('active', node === el);
+    });
+    document.querySelectorAll('[data-kind="function"], [data-kind="stage"], [data-kind="cell"]').forEach((node) => {
+      node.classList.remove('active');
+    });
+    renderDetail();
+  }
+
+  function bindHover(el, fn) {
+    el.addEventListener('mouseenter', () => fn(el));
+    el.addEventListener('focus', () => fn(el));
+    el.addEventListener('click', () => fn(el));
+  }
+
+  document.querySelectorAll('.fw-tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const id = tab.dataset.tab;
+      document.querySelectorAll('.fw-tab').forEach((t) => {
+        const on = t.dataset.tab === id;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      document.getElementById('fw-panel-structure').classList.toggle('active', id === 'structure');
+      document.getElementById('fw-panel-structure').hidden = id !== 'structure';
+      document.getElementById('fw-panel-evolution').classList.toggle('active', id === 'evolution');
+      document.getElementById('fw-panel-evolution').hidden = id !== 'evolution';
+    });
+  });
+
+  document.querySelectorAll('[data-kind="function"]').forEach((el) => bindHover(el, () => showFunction(el.dataset.id)));
+  document.querySelectorAll('[data-kind="stage"]').forEach((el) => bindHover(el, () => showStage(el.dataset.id)));
+  document.querySelectorAll('[data-kind="cell"]').forEach((el) =>
+    bindHover(el, () => showIntersection(el.dataset.fn, el.dataset.stage))
+  );
+  document.querySelectorAll('[data-kind="structure"]').forEach((el) => bindHover(el, showStructure));
+
+  showIntersection('sales', 'human');
+</script>

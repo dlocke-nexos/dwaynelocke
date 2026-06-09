@@ -1,0 +1,55 @@
+# Project Rules — DwayneLocke.com
+
+## What this site is
+A thesis/publication home for Dwayne Locke. Essays lead. The business-dependency
+assessment is a secondary tool, never the headline. The site reads like a calm
+publication, not a SaaS landing page or a sales funnel.
+
+## Voice (non-negotiable)
+- Observational and grounded, not authoritative. The stance is "an operator working
+  through this in the open," NOT "an expert with all the answers."
+- Speak to the reader as "you." Dwayne refers to himself as "I." Never "we" as if the
+  reader and author are one.
+- No hype. No "revolutionize / transform / unlock / supercharge." No guru or coach tone.
+- No fabricated proof. Never invent statistics, testimonials, client names, logos, or
+  benchmark numbers. If proof doesn't exist yet, leave it out — do not manufacture it.
+- AI/automation is named openly in essays (the content is about it), but the site never
+  leads with AI as a pitch. Lead with the observation, not the technology.
+- Findings in the assessment are stated as observation ("X appears to create the most
+  dependency"), hedged, never as verdicts.
+
+## Design tokens
+Defined once in src/styles/global.css. Do not hardcode hex values elsewhere.
+  --ink: #1c1a17;        /* primary text */
+  --ink-soft: #4a463f;   /* secondary text */
+  --ink-faint: #807a70;  /* tertiary / captions */
+  --paper: #f4f1ea;      /* page background */
+  --paper-2: #ece7dc;    /* alt background, dark sections invert */
+  --card: #fbf9f4;       /* card background */
+  --accent: #b8552f;     /* rust accent */
+  --accent-soft: #d8a48c;
+  --accent-bg: #f3e3da;
+  --line: rgba(28,26,23,0.12);
+Fonts:
+  Display/serif: 'Fraunces' (headings, essay titles, pull-quotes — use italics for emphasis)
+  Body/sans: 'Outfit' (UI, body, nav)
+Feel: warm paper, editorial, generous whitespace, calm. Reading width ~720px for essays.
+No loud gradients, no purple, no stock-startup look.
+
+## Structure rules
+- Essays are Markdown files in src/content/essays/. Adding an essay = adding a file,
+  never editing a monolith. The URL slug comes from the filename.
+- The assessment stays DATA-DRIVEN: trades, departments, and functions are data objects
+  in src/components/Assessment.astro. To add a trade or question, add data — never
+  hardcode UI per case.
+- The assessment score is a DEPENDENCY score: higher = more depends on the owner = worse.
+  Low is the good outcome. Keep this direction consistent everywhere.
+- Keep the home page fast and uncluttered. The assessment loads as an overlay, not inline.
+
+## Things NOT to do
+- Don't add AI-generated stock imagery or fake screenshots.
+- Don't add social-proof sections with invented numbers.
+- Don't convert the publication into a conversion landing page "to improve conversion."
+  It's a publication on purpose.
+- Don't over-engineer: no CMS, no database, no auth. Markdown + static + one email
+  integration is the whole system.

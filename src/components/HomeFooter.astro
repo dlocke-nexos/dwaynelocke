@@ -1,0 +1,19 @@
+---
+import { site } from '../site';
+---
+<footer class="pub-footer" id="about">
+  <div class="pub-footer-inner wide">
+    <div class="pub-footer-bio">
+      <p class="pub-footer-name">Dwayne Locke</p>
+      <p class="pub-footer-tagline">
+        Enterprise transformation practitioner exploring how AI changes the way organizations scale.
+      </p>
+    </div>
+    <nav class="pub-footer-links" aria-label="Footer">
+      {site.linkedin && <a href={site.linkedin} rel="noopener noreferrer">LinkedIn</a>}
+      <a href="/#essays">Articles</a>
+      <a href="/home#about">About</a>
+      <a href="/home#field-notes">Field Notes</a>
+    </nav>
+  </div>
+</footer>

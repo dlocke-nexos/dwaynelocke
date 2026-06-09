@@ -1,0 +1,261 @@
+{
+  "version": "2.13",
+  "children": [
+    {
+      "type": "frame",
+      "id": "homeScreen",
+      "x": 0,
+      "y": 0,
+      "name": "DwayneLocke — Homepage",
+      "clip": true,
+      "width": 1200,
+      "height": 3200,
+      "fill": "#f4f1ea",
+      "layout": "vertical",
+      "gap": 0,
+      "children": [
+        {
+          "type": "frame",
+          "id": "navBar",
+          "name": "Navigation",
+          "width": "fill_container",
+          "height": 72,
+          "layout": "horizontal",
+          "padding": [22, 40, 22, 40],
+          "alignItems": "center",
+          "justifyContent": "space_between",
+          "stroke": "#1c1a171f",
+          "strokeWidth": 0.5,
+          "children": [
+            {
+              "type": "text",
+              "id": "logoText",
+              "name": "Logo",
+              "content": "Dwayne Locke",
+              "fontFamily": "Fraunces",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "fill": "#1c1a17"
+            },
+            {
+              "type": "frame",
+              "id": "navLinks",
+              "name": "Nav Links",
+              "layout": "horizontal",
+              "gap": 24,
+              "alignItems": "center",
+              "children": [
+                { "type": "text", "id": "nav1", "content": "Articles", "fontFamily": "Outfit", "fontSize": 14, "fill": "#4a463f" },
+                { "type": "text", "id": "nav2", "content": "Research", "fontFamily": "Outfit", "fontSize": 14, "fill": "#4a463f" },
+                { "type": "text", "id": "nav3", "content": "Frameworks", "fontFamily": "Outfit", "fontSize": 14, "fill": "#4a463f" },
+                { "type": "text", "id": "nav4", "content": "About", "fontFamily": "Outfit", "fontSize": 14, "fill": "#4a463f" },
+                {
+                  "type": "frame",
+                  "id": "navCta",
+                  "name": "Field Notes CTA",
+                  "padding": [8, 15, 8, 15],
+                  "stroke": "#1c1a171f",
+                  "strokeWidth": 0.5,
+                  "cornerRadius": 999,
+                  "children": [
+                    { "type": "text", "id": "navCtaText", "content": "Field Notes", "fontFamily": "Outfit", "fontSize": 13, "fill": "#1c1a17" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "heroSection",
+          "name": "Hero",
+          "width": "fill_container",
+          "layout": "horizontal",
+          "gap": 48,
+          "padding": [72, 40, 64, 40],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "heroCopy",
+              "name": "Hero Copy",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 18,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "heroHeadline",
+                  "name": "Headline",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "How organizations scale in the age of AI.",
+                  "fontFamily": "Fraunces",
+                  "fontSize": 48,
+                  "fontWeight": "500",
+                  "fill": "#1c1a17",
+                  "lineHeight": 1.12
+                },
+                {
+                  "type": "text",
+                  "id": "heroLede",
+                  "name": "Supporting copy",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "For the last 15 years, I've helped organizations adopt cloud software.\n\nNow I'm studying how AI, automation, digital workers, and new operating models are changing the way businesses grow.",
+                  "fontFamily": "Outfit",
+                  "fontSize": 17,
+                  "fill": "#4a463f",
+                  "lineHeight": 1.55
+                },
+                {
+                  "type": "frame",
+                  "id": "heroCtas",
+                  "name": "CTAs",
+                  "layout": "horizontal",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ctaPrimary",
+                      "name": "Read the Introduction",
+                      "padding": [13, 28, 13, 28],
+                      "fill": "#b8552f",
+                      "cornerRadius": 999,
+                      "children": [
+                        { "type": "text", "id": "ctaPrimaryText", "content": "Read the Introduction", "fontFamily": "Outfit", "fontSize": 15, "fontWeight": "500", "fill": "#f4f1ea" }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ctaSecondary",
+                      "name": "Explore the Research",
+                      "padding": [13, 28, 13, 28],
+                      "stroke": "#d8a48c",
+                      "strokeWidth": 0.5,
+                      "cornerRadius": 999,
+                      "children": [
+                        { "type": "text", "id": "ctaSecondaryText", "content": "Explore the Research", "fontFamily": "Outfit", "fontSize": 15, "fontWeight": "500", "fill": "#b8552f" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "heroImageSlot",
+              "name": "IMAGE — Evolution visual (Midjourney or SVG)",
+              "width": 420,
+              "height": 280,
+              "fill": "#fbf9f4",
+              "stroke": "#d8a48c",
+              "strokeWidth": 1,
+              "cornerRadius": 16,
+              "layout": "vertical",
+              "padding": [24, 24, 24, 24],
+              "gap": 12,
+              "alignItems": "center",
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "heroImageLabel",
+                  "name": "Image direction",
+                  "textGrowth": "fixed-width",
+                  "width": 360,
+                  "textAlign": "center",
+                  "content": "Hero visual placeholder\n\nPeople → Software → Automation → AI Agents\n\nMinimalist · Abstract · Editorial\nNo robots · No neon",
+                  "fontFamily": "Outfit",
+                  "fontSize": 13,
+                  "fill": "#807a70",
+                  "lineHeight": 1.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "startHereSection",
+          "name": "Start Here",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [56, 40, 56, 40],
+          "children": [
+            {
+              "type": "text",
+              "id": "startHereTitle",
+              "content": "Start Here",
+              "fontFamily": "Fraunces",
+              "fontSize": 32,
+              "fontWeight": "500",
+              "fill": "#1c1a17"
+            },
+            {
+              "type": "frame",
+              "id": "featuredCard",
+              "name": "Featured article card",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 14,
+              "padding": [40, 44, 40, 44],
+              "fill": "#fbf9f4",
+              "stroke": "#1c1a171f",
+              "strokeWidth": 0.5,
+              "cornerRadius": 20,
+              "children": [
+                { "type": "text", "id": "featLabel", "content": "FEATURED ARTICLE", "fontFamily": "Outfit", "fontSize": 12, "fontWeight": "500", "fill": "#b8552f", "letterSpacing": 1.4 },
+                {
+                  "type": "text",
+                  "id": "featTitle",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "I Spent 15 Years Watching Organizations Adopt Cloud Software. Now I'm Watching Them Adopt AI.",
+                  "fontFamily": "Fraunces",
+                  "fontSize": 28,
+                  "fontWeight": "500",
+                  "fill": "#1c1a17",
+                  "lineHeight": 1.25
+                },
+                {
+                  "type": "text",
+                  "id": "featExcerpt",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Why the bottleneck was never the software — and what changes when technology starts performing work, not just documenting it.",
+                  "fontFamily": "Outfit",
+                  "fontSize": 16,
+                  "fill": "#4a463f",
+                  "lineHeight": 1.55
+                },
+                { "type": "text", "id": "featLink", "content": "Read Article →", "fontFamily": "Outfit", "fontSize": 15, "fontWeight": "500", "fill": "#b8552f" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "noteFrame",
+          "name": "Agent note",
+          "width": "fill_container",
+          "padding": [0, 40, 40, 40],
+          "children": [
+            {
+              "type": "text",
+              "id": "agentNote",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "Open this file in Pencil. Ask the agent to refine imagery slots, add research card thumbnails, and align spacing with /home once Pencil MCP is connected (Cursor → Settings → Tools & MCP).",
+              "fontFamily": "Outfit",
+              "fontSize": 12,
+              "fill": "#807a70",
+              "lineHeight": 1.5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
