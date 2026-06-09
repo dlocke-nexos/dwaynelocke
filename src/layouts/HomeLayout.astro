@@ -3,6 +3,7 @@ import '../styles/global.css';
 import HomeNav from '../components/HomeNav.astro';
 import HomeFooter from '../components/HomeFooter.astro';
 import Assessment from '../components/Assessment.astro';
+import LanguagePicker from '../components/LanguagePicker.astro';
 
 interface Props {
   title: string;
@@ -20,6 +21,15 @@ const {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content={new URL('/og-image.png', Astro.site)} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content={new URL('/og-image.png', Astro.site)} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,400i;9..144,500i&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -28,6 +38,7 @@ const {
   <HomeNav />
   <slot />
   <HomeFooter />
+  <LanguagePicker />
   <Assessment />
 </body>
 </html>

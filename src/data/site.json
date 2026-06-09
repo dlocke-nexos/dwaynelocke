@@ -1,0 +1,7 @@
+{
+  "linkedin": "",
+  "languages": [
+    { "code": "en", "label": "EN", "name": "English", "href": "/", "available": true },
+    { "code": "es", "label": "ES", "name": "Español", "href": "/es/", "available": false }
+  ]
+}

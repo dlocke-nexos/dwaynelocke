@@ -13,6 +13,8 @@ const essays = defineCollection({
     draft: z.boolean().default(false),
     // Optional: set to control ordering / "coming soon" stubs.
     order: z.number().optional(),
+    // Show in /home Latest Research. Default true; set false for the Start Here anchor essay.
+    showInResearch: z.boolean().default(true),
   }),
 });
 

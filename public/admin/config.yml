@@ -1,0 +1,50 @@
+# Decap CMS — edit at https://YOUR-SITE.netlify.app/admin/
+# Requires Netlify Identity + Git Gateway (see docs/ADMIN-SETUP.md)
+
+backend:
+  name: git-gateway
+  branch: main
+
+# Uncomment for local editing without login (run: npx decap-server)
+# local_backend: true
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: essays
+    label: Essays
+    label_singular: Essay
+    folder: src/content/essays
+    create: true
+    slug: '{{slug}}'
+    extension: md
+    format: frontmatter
+    summary: '{{title}}'
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Publish Date, name: pubDate, widget: datetime }
+      - { label: Draft, name: draft, widget: boolean, default: false, hint: 'Draft essays show as Coming soon and have no public page.' }
+      - { label: Order, name: order, widget: number, required: false, hint: 'Lower number = higher in lists. Leave blank for default.' }
+      - { label: Show in Latest Research, name: showInResearch, widget: boolean, default: true, hint: 'Uncheck for the Start Here anchor essay.' }
+      - { label: Body, name: body, widget: markdown }
+
+  - name: site
+    label: Site configuration
+    files:
+      - label: General settings
+        name: general
+        file: src/data/site.json
+        fields:
+          - { label: LinkedIn URL, name: linkedin, widget: string, required: false }
+          - label: Languages
+            name: languages
+            widget: list
+            summary: '{{fields.label}} — {{fields.name}}'
+            fields:
+              - { label: Code, name: code, widget: string, hint: 'e.g. en' }
+              - { label: Short label, name: label, widget: string, hint: 'e.g. EN' }
+              - { label: Full name, name: name, widget: string }
+              - { label: Home path, name: href, widget: string }
+              - { label: Available, name: available, widget: boolean, default: false }

@@ -4,6 +4,7 @@ description: "Why the bottleneck was never the software — and what changes whe
 pubDate: 2026-06-08
 draft: false
 order: 1
+showInResearch: false
 ---
 
 For most of my career, I wasn't building startups. I was helping organizations navigate change.

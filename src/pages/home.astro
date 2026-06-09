@@ -33,7 +33,7 @@ const exploring = [
     id: 'enterprise-lessons' as const,
     title: 'Enterprise Lessons',
     body: 'What small businesses can learn from large transformations.',
-    href: '#research-watching-organizations-adopt-ai',
+    href: '/',
   },
   {
     step: 2,
@@ -65,7 +65,7 @@ const exploring = [
   },
 ];
 
-const research = all.slice(0, 6);
+const research = all.filter((e) => e.data.showInResearch !== false).slice(0, 6);
 ---
 <HomeLayout title="Dwayne Locke — How organizations scale in the age of AI">
   <section class="pub-hero wide" id="top">

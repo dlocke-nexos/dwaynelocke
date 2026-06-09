@@ -1,0 +1,30 @@
+---
+import { languages } from '../site';
+
+const pathname = Astro.url.pathname;
+const current = pathname === '/es' || pathname.startsWith('/es/') ? 'es' : 'en';
+---
+<div class="lang-bar" role="navigation" aria-label="Language">
+  <span class="lang-bar-label">Language</span>
+  <div class="lang-bar-options">
+    {languages.map((lang) =>
+      lang.available ? (
+        <a
+          href={lang.href}
+          class={`lang-option${lang.code === current ? ' active' : ''}`}
+          hreflang={lang.code}
+          lang={lang.code}
+          aria-current={lang.code === current ? 'true' : undefined}
+        >
+          <span aria-hidden="true">{lang.label}</span>
+          <span class="sr-only">{lang.name}</span>
+        </a>
+      ) : (
+        <span class="lang-option lang-option--soon" title="Coming soon" lang={lang.code}>
+          <span aria-hidden="true">{lang.label}</span>
+          <span class="sr-only">{lang.name} (coming soon)</span>
+        </span>
+      )
+    )}
+  </div>
+</div>
