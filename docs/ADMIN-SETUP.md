@@ -23,14 +23,22 @@ Connect repository `dlocke-nexos/dwaynelocke`, branch `main`.
 
 This lets the CMS commit essay and config changes to your repo.
 
-### 4. Invite yourself (password login)
+### 4. Set Identity email links to `/admin/`
+
+**Identity → Emails → URL paths** (or **Identity → Settings**)
+
+Set **Invite**, **Confirmation**, **Recovery**, and **Email change** to `/admin/` so invite and password-reset links open the CMS login page, not the public homepage.
+
+If a reset link already opened the homepage, go to `/admin/` and click **Login with Netlify Identity** → **Forgot password?** again after this is set.
+
+### 5. Invite yourself (password login)
 
 **Identity → Invite users**  
 Enter your email. You’ll get an invite to set a password.
 
 **Recommended:** Under **Identity → Registration**, set **Registration preferences** to **Invite only** so random visitors can’t sign up.
 
-### 5. Redeploy
+### 6. Redeploy
 
 Push any pending changes or trigger **Deploys → Trigger deploy** so `/admin` is live.
 

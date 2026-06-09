@@ -16,8 +16,12 @@
             window.netlifyIdentity.on('login', () => {
               document.location.reload();
             });
+            window.netlifyIdentity.on('error', (err) => {
+              console.error('Netlify Identity error:', err);
+            });
           }
         });
+        window.netlifyIdentity.init();
       }
     </script>
   </body>

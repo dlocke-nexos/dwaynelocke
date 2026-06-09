@@ -36,6 +36,12 @@ const {
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,400i;9..144,500i&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  {/* Netlify Identity invite/recovery links must land on /admin/ where the widget loads */}
+  <script is:inline>
+    if (/recovery_token|invite_token|confirmation_token/.test(location.hash)) {
+      location.replace('/admin/' + location.hash);
+    }
+  </script>
 </head>
 <body>
   <Nav home={home} />
