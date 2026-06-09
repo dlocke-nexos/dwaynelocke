@@ -1,136 +1,119 @@
 # DwayneLocke.com
 
 A thesis/publication site built with [Astro](https://astro.build). Essays are Markdown
-files; the business-dependency assessment is one interactive island. Static output,
-version-controlled on GitHub, hosted on Netlify.
+files; the business-dependency assessment is a secondary interactive overlay. Static
+output, version-controlled on GitHub, hosted on Netlify.
 
 ---
 
-## Run it locally (host while you edit)
+## Run locally
 
-You need [Node.js](https://nodejs.org) 20+ installed. Then, from this folder:
+Node.js 20+ required:
 
 ```bash
-npm install     # first time only — downloads dependencies
-npm run dev      # starts the local server with live reload
+npm install
+npm run dev
 ```
 
-Open the URL it prints (usually **http://localhost:4321**). Edit any file and save —
-the browser refreshes automatically. Stop the server with `Ctrl+C`.
-
-To preview the real production build locally:
+Open **http://localhost:4321**. Production preview:
 
 ```bash
-npm run build    # outputs the static site to ./dist
-npm run preview  # serves ./dist exactly as it will deploy
+npm run build
+npm run preview
 ```
 
 ---
 
-## Add a new essay
+## Site map
 
-1. Create a new Markdown file in `src/content/essays/`, e.g. `my-new-essay.md`.
-   The filename becomes the URL: `/essays/my-new-essay/`.
-2. Start it with frontmatter:
+| Route | What it is |
+|-------|------------|
+| `/` | Introduction essay (anchor), full text + writing list |
+| `/home` | Publication home — hero, research, framework teaser, field notes |
+| `/essays/[slug]/` | Individual essays |
+| `/frameworks` | Capability framework tool |
+| `/es/...` | Spanish mirrors of the above |
+| `/admin` | Decap CMS (Netlify Identity + Git Gateway) |
+
+Voice, design tokens, and content rules live in `.cursorrules`.
+
+---
+
+## Add an essay (English)
+
+1. Create `src/content/essays/my-essay.md` (filename = URL slug).
+2. Frontmatter:
 
    ```markdown
    ---
-   title: "Your Essay Title"
-   description: "One-line summary shown in the essay list and meta tags."
+   title: "Essay title"
+   description: "One-line summary for cards and meta tags."
+   titleEs: "Título en español"          # optional
+   descriptionEs: "Resumen en español"   # optional
    pubDate: 2026-07-01
-   draft: false       # true = shows as "coming soon", no page generated
-   order: 5           # controls position in the list (lower = higher up)
+   draft: false
+   order: 5
    ---
-
-   Your first paragraph becomes the lede (larger, lighter).
-
-   ## A section heading
-
-   Regular paragraphs, **bold**, _italic_, and lists all work.
-
-   > A blockquote renders as a rust pull-quote.
    ```
 
-3. Save. In dev it appears immediately. Set `draft: false` to publish it; `draft: true`
-   keeps it in the list as "— coming soon" without a live page.
+3. `draft: true` shows in lists as coming soon; no public page is generated.
 
-That's the whole workflow — **adding an essay is adding a file.** Never edit a monolith.
-
----
-
-## The assessment
-
-Lives in `src/components/Assessment.astro` and opens as a full-screen overlay from any
-"Take the assessment" / "Assessment" trigger (nav, footer, mid-essay CTA). It is
-**data-driven**: edit the `TRADES` and `DEPTS` objects to add a business type or
-question — don't hardcode UI per case. The score is a *dependency* score (higher = more
-runs through the owner = worse).
+For Spanish body copy, add a matching file under `src/content/essaysEs/`. UI strings
+and framework data live in `src/i18n/` and `src/components/framework-data/`.
 
 ---
 
-## Two integrations still to wire (currently TODOs)
+## Field Notes (email)
 
-Both are placeholders on purpose — search the code for `TODO(email)`:
-
-1. **Newsletter signup** (`subscribe()` in `src/components/Assessment.astro`) → your
-   email provider's form/embed or API endpoint.
-2. **Assessment results capture** (`A.plan()` in the same file) → capture the visitor's
-   email, send their results, add them to the **same** provider.
-
-Tell whoever is wiring these which provider you use (Beehiiv, ConvertKit, Substack,
-Mailchimp, etc.) and they can replace both placeholders.
+Signup UI is on `/home#field-notes` and at the bottom of essay pages (`FollowStrip`).
+The handler is `subscribe()` in `src/components/Assessment.astro` — search for
+`TODO(email)` to wire your provider (Buttondown, ConvertKit, Netlify Forms, etc.).
 
 ---
 
-## Deploy: GitHub + Netlify
+## Assessment overlay
 
-### 1. Put it on GitHub
-From this folder (after creating an empty repo on github.com):
+`src/components/Assessment.astro` — data-driven dependency score. Edit `TRADES` and
+`DEPTS` to add questions; do not hardcode UI per case. Higher score = more owner
+dependency. Opens via `openAssessment()` from mid-essay CTAs (English only today).
 
-```bash
-git init
-git add .
-git commit -m "Initial commit: DwayneLocke.com"
-git branch -M main
-git remote add origin https://github.com/<your-username>/dwaynelocke.com.git
-git push -u origin main
-```
+---
 
-### 2. Connect Netlify
-- Log in to [Netlify](https://app.netlify.com) → **Add new site → Import an existing project**.
-- Pick the GitHub repo. Netlify reads `netlify.toml` and auto-fills:
-  - Build command: `npm run build`
-  - Publish directory: `dist`
-- Deploy. Every push to `main` redeploys automatically.
+## Deploy (GitHub + Netlify)
 
-> **Ship ugly first.** Get this live on the Netlify pipeline before polishing. The
-> anchor essay being public + newsletter capture working is the launch bar. Everything
-> else is refinement you can do while it's already live.
+`netlify.toml` sets build command `npm run build` and publish directory `dist`.
+Push to `main` to redeploy.
+
+1. Commit and push to GitHub.
+2. Netlify → Import project → select repo.
+3. Set custom domain; `astro.config.mjs` already has `site: 'https://dwaynelocke.com'`.
+4. For `/admin`: enable Netlify Identity + Git Gateway — see `docs/ADMIN-SETUP.md`.
 
 ---
 
 ## Project structure
 
 ```
-dwaynelocke.com/
-├─ astro.config.mjs        # Astro config (set your real domain in `site`)
-├─ netlify.toml            # Netlify build settings
-├─ .cursorrules            # voice + design rules (read before editing content)
-├─ src/
-│  ├─ content/
-│  │  ├─ config.ts         # essay frontmatter schema
-│  │  └─ essays/           # ← your essays live here, one file each
-│  ├─ components/
-│  │  ├─ Assessment.astro  # the interactive assessment (data-driven)
-│  │  ├─ Newsletter.astro  # signup section
-│  │  ├─ Nav.astro
-│  │  └─ Footer.astro
-│  ├─ layouts/
-│  │  └─ BaseLayout.astro  # shared shell (fonts, nav, footer, assessment)
-│  ├─ pages/
-│  │  ├─ index.astro       # homepage: masthead + anchor essay + list
-│  │  └─ essays/[slug].astro  # generated essay pages
-│  └─ styles/
-│     └─ global.css        # design tokens + all styles (edit tokens here)
-└─ public/                 # static assets (favicon, images) — served as-is
+src/
+├─ content/essays/          # English essays (one file = one URL)
+├─ content/essaysEs/        # Spanish essay bodies
+├─ components/
+│  ├─ HomePage.astro        # /home sections
+│  ├─ PubNav.astro          # site navigation
+│  ├─ FieldNotes.astro
+│  ├─ Assessment.astro      # overlay + subscribe() placeholder
+│  └─ framework-data/       # capability framework content (en + es)
+├─ i18n/                    # UI copy (en.ts, es.ts)
+├─ layouts/
+│  ├─ BaseLayout.astro      # essays, intro
+│  └─ HomeLayout.astro      # publication home
+├─ pages/
+│  ├─ index.astro           # /
+│  ├─ home.astro            # /home
+│  ├─ frameworks.astro
+│  ├─ essays/[slug].astro
+│  └─ es/                   # Spanish route mirrors
+└─ styles/global.css        # design tokens — edit colors here only
+public/                     # favicon, og-image, admin CMS
+docs/                       # admin setup, CMS notes, design brief
 ```

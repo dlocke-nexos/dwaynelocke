@@ -1,30 +1,29 @@
 ---
-import { languages } from '../site';
+import { getLocale, switchLocalePath, t } from '../i18n';
 
-const pathname = Astro.url.pathname;
-const current = pathname === '/es' || pathname.startsWith('/es/') ? 'es' : 'en';
+interface Props {
+  pathname?: string;
+}
+const pathname = Astro.props.pathname ?? Astro.url.pathname;
+const locale = getLocale(pathname);
+const copy = t(locale);
+const enHref = switchLocalePath(pathname, 'en');
+const esHref = switchLocalePath(pathname, 'es');
 ---
-<div class="lang-bar" role="navigation" aria-label="Language">
-  <span class="lang-bar-label">Language</span>
-  <div class="lang-bar-options">
-    {languages.map((lang) =>
-      lang.available ? (
-        <a
-          href={lang.href}
-          class={`lang-option${lang.code === current ? ' active' : ''}`}
-          hreflang={lang.code}
-          lang={lang.code}
-          aria-current={lang.code === current ? 'true' : undefined}
-        >
-          <span aria-hidden="true">{lang.label}</span>
-          <span class="sr-only">{lang.name}</span>
-        </a>
-      ) : (
-        <span class="lang-option lang-option--soon" title="Coming soon" lang={lang.code}>
-          <span aria-hidden="true">{lang.label}</span>
-          <span class="sr-only">{lang.name} (coming soon)</span>
-        </span>
-      )
-    )}
-  </div>
+<div class="nav-lang" role="navigation" aria-label={copy.lang.label}>
+  <a
+    href={enHref}
+    class={locale === 'en' ? 'active' : undefined}
+    hreflang="en"
+    lang="en"
+    aria-current={locale === 'en' ? 'true' : undefined}
+  >EN</a>
+  <span class="nav-lang-sep" aria-hidden="true">·</span>
+  <a
+    href={esHref}
+    class={locale === 'es' ? 'active' : undefined}
+    hreflang="es"
+    lang="es"
+    aria-current={locale === 'es' ? 'true' : undefined}
+  >ES</a>
 </div>

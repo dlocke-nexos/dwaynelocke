@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import FollowStrip from '../../../components/FollowStrip.astro';
+import { t } from '../../../i18n';
+import { essayTitle, essayDescription } from '../../../i18n/essay-meta';
+import { getEssayBody } from '../../../lib/essays';
+
+export async function getStaticPaths() {
+  const essays = await getCollection('essays', ({ data }) => !data.draft);
+  return essays.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await getEssayBody(entry.slug, 'es');
+const copy = t('es');
+const dateStr = entry.data.pubDate.toLocaleDateString('es-ES', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+<BaseLayout title={`${essayTitle(entry.data, 'es')} — Dwayne Locke`} description={essayDescription(entry.data, 'es')} locale="es">
+  <article class="wrap essay" style="border-top:none">
+    <div class="essay-tag">{copy.essay.tag}</div>
+    <h1 class="essay-title">{essayTitle(entry.data, 'es')}</h1>
+    <div class="meta">{copy.essay.byline} · {dateStr}</div>
+    <Content />
+    <a href="/es/#essays" class="backlink">{copy.essay.backLink}</a>
+  </article>
+
+  <FollowStrip locale="es" />
+</BaseLayout>

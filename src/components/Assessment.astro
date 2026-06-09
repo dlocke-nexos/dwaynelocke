@@ -10,7 +10,7 @@
 <!-- assessment overlay -->
 <div class="overlay" id="overlay">
   <div class="ov-top">
-    <div class="logo">Dwayne<span style="color:var(--accent)">Locke</span></div>
+    <div class="logo">Dwayne&nbsp;<span class="logo-accent">Locke</span></div>
     <button class="ov-close" onclick="closeAssessment()">Close ✕</button>
   </div>
   <div class="ov-inner">
@@ -27,8 +27,11 @@
    Right now it only shows a confirmation message; it does NOT store the email. */
 function subscribe(e){
   e.preventDefault();
-  document.getElementById('newsfine').textContent="Thanks — you're on the list. (TODO: wire this form to your email provider.)";
-  document.getElementById('email').value="";
+  var form=e.target;
+  var fine=document.getElementById('newsfine');
+  var email=document.getElementById('email');
+  if(fine) fine.textContent=form.getAttribute('data-success')||"Thanks — you're on the list.";
+  if(email) email.value="";
   return false;
 }
 

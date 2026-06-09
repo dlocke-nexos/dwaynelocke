@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FollowStrip from '../../components/FollowStrip.astro';
+import PersonPlaceholder from '../../components/PersonPlaceholder.astro';
+import { t, essayPath } from '../../i18n';
+import { essayTitle, essayDescription } from '../../i18n/essay-meta';
+import { getAnchorEssay, getEssayBody, getSortedEssays } from '../../lib/essays';
+
+const copy = t('es');
+const all = await getSortedEssays();
+const anchor = await getAnchorEssay();
+const { Content } = await getEssayBody(anchor.slug, 'es');
+
+const titleParts = copy.index.title.split(copy.index.titleEmphasis);
+---
+<BaseLayout title={copy.meta.indexTitle} locale="es">
+  <div id="top" class="wrap">
+    <header class="mast mast--author">
+      <div class="author-thumb">
+        <PersonPlaceholder size="thumb" />
+      </div>
+      <div class="eyebrow">{copy.index.eyebrow}</div>
+      <h1>
+        {titleParts[0]}<em>{copy.index.titleEmphasis}</em>{titleParts[1] ?? ''}
+      </h1>
+      <p class="standfirst">{copy.index.standfirst}</p>
+      <p class="byline">{copy.index.byline}</p>
+    </header>
+  </div>
+
+  <article class="wrap essay">
+    <Content />
+  </article>
+
+  <FollowStrip locale="es" />
+
+  <section class="more wide" id="essays">
+    <div class="sec-eyebrow">{copy.index.writing}</div>
+    <div class="plist">
+      {all.map((e) =>
+        e.data.draft ? (
+          <a class="pitem soon">
+            <div class="pt">{essayTitle(e.data, 'es')}</div>
+            <div class="pd">{essayDescription(e.data, 'es')}</div>
+          </a>
+        ) : (
+          <a class="pitem live" href={essayPath(e.slug, 'es', e.slug === anchor.slug)}>
+            <div class="pt">{essayTitle(e.data, 'es')}</div>
+            <div class="pd">{essayDescription(e.data, 'es')}</div>
+          </a>
+        )
+      )}
+    </div>
+  </section>
+</BaseLayout>

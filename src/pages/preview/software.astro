@@ -1,0 +1,153 @@
+---
+import '../../styles/global.css';
+import '../../styles/software-preview.css';
+import Assessment from '../../components/Assessment.astro';
+import { getSortedEssays, getAnchorEssay } from '../../lib/essays';
+import { essayTitle, essayDescription } from '../../i18n/essay-meta';
+
+const all = await getSortedEssays();
+const anchor = await getAnchorEssay();
+const published = all.filter((e) => !e.data.draft).slice(0, 3);
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Software preview — Dwayne Locke (not live)</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body class="software-preview">
+  <div class="sp-banner">
+    <strong>Preview only</strong> — your publication at <a href="/home">/home</a> is unchanged.
+    <a href="/home">← Back to publication</a>
+  </div>
+
+  <div class="sp-shell">
+    <header class="sp-topbar">
+      <a href="/preview/software" class="sp-logo">Dwayne <span>Locke</span></a>
+      <nav class="sp-modules" aria-label="Product modules">
+        <a href="/frameworks" class="sp-module active">Framework</a>
+        <button type="button" class="sp-module" onclick="openAssessment()">Assessment</button>
+        <a href="/home#research" class="sp-module">Insights</a>
+        <a href="/" class="sp-module">Essays</a>
+        <span class="sp-badge">Preview</span>
+      </nav>
+    </header>
+
+    <section class="sp-hero">
+      <div>
+        <p class="sp-eyebrow">Capability workspace</p>
+        <h1>See where work still runs through you.</h1>
+        <p class="sp-hero-lede">
+          Map organizational capability across structure and evolution — then run a short
+          dependency scan. Same research underneath; packaged as tools you can return to.
+        </p>
+        <div class="sp-ctas">
+          <a href="/frameworks" class="sp-btn sp-btn--primary">Open framework</a>
+          <button type="button" class="sp-btn sp-btn--secondary" onclick="openAssessment()">
+            Run assessment
+          </button>
+        </div>
+      </div>
+
+      <div class="sp-panel" aria-hidden="true">
+        <div class="sp-panel-head">
+          <div class="sp-panel-dots"><i></i><i></i><i></i></div>
+          <span>Capability matrix · Sales × Stage 3</span>
+        </div>
+        <div class="sp-panel-body">
+          <div class="sp-mini-tabs">
+            <span class="sp-mini-tab on">Structure</span>
+            <span class="sp-mini-tab">Evolution</span>
+          </div>
+          <div class="sp-matrix">
+            {Array.from({ length: 18 }).map((_, i) => (
+              <div class={`sp-cell${i === 7 ? ' active' : i === 2 || i === 8 || i === 13 ? ' hot' : ''}`}></div>
+            ))}
+          </div>
+          <div class="sp-panel-foot">
+            <span>6 functions × 5 stages</span>
+            <span>Hover to explore →</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="sp-section-head">
+      <div>
+        <h2>Modules</h2>
+        <p>What a product-first home might foreground.</p>
+      </div>
+    </div>
+    <div class="sp-grid-3">
+      <a href="/frameworks" class="sp-card">
+        <div class="sp-card-icon">M</div>
+        <h3>Capability framework</h3>
+        <p>Structure × evolution — explore how each function operates at each stage.</p>
+      </a>
+      <button type="button" class="sp-card" onclick="openAssessment()" style="text-align:left;width:100%">
+        <div class="sp-card-icon">A</div>
+        <h3>Dependency assessment</h3>
+        <p>A short diagnostic: which work still routes through the owner.</p>
+      </button>
+      <a href="/home#field-notes" class="sp-card">
+        <div class="sp-card-icon">N</div>
+        <h3>Field notes</h3>
+        <p>Observations from the field — still editorial, linked from the app shell.</p>
+      </a>
+    </div>
+
+    <div class="sp-section-head">
+      <div>
+        <h2>Insights</h2>
+        <p>Essays behind tabs instead of the homepage hero.</p>
+      </div>
+    </div>
+    <div class="sp-tabs" role="tablist" aria-label="Insight categories (preview)">
+      <span class="sp-tab on" role="tab" aria-selected="true">All</span>
+      <span class="sp-tab" role="tab">Essays</span>
+      <span class="sp-tab" role="tab">Framework</span>
+    </div>
+    <div class="sp-insights">
+      {published.map((entry) => (
+        <a
+          class="sp-insight"
+          href={entry.slug === anchor.slug ? '/' : `/essays/${entry.slug}/`}
+        >
+          <p class="sp-insight-meta">Essay</p>
+          <h3>{essayTitle(entry.data, 'en')}</h3>
+          <p>{essayDescription(entry.data, 'en')}</p>
+        </a>
+      ))}
+    </div>
+
+    <div class="sp-compare">
+      <div class="sp-compare--pub">
+        <h3>Publication (live today)</h3>
+        <ul>
+          <li>Essays lead the story</li>
+          <li>Warm editorial layout</li>
+          <li>Framework & assessment are quiet CTAs</li>
+          <li>Calm, reading-first rhythm</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Software preview (this page)</h3>
+        <ul>
+          <li>Tools lead — framework & assessment first</li>
+          <li>Denser UI, module navigation</li>
+          <li>Insights tabbed and secondary</li>
+          <li>Return visits, not just reading once</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <Assessment />
+</body>
+</html>

@@ -1,0 +1,112 @@
+---
+import LanguagePicker from './LanguagePicker.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import { t, type Locale, homePath, anchorPath } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+  pathname?: string;
+}
+const locale = Astro.props.locale ?? 'en';
+const pathname = Astro.props.pathname ?? Astro.url.pathname;
+const copy = t(locale);
+const home = homePath(locale);
+const intro = anchorPath(locale);
+
+function normalizePath(path: string): string {
+  if (path.endsWith('/') && path.length > 1) return path.slice(0, -1);
+  return path || '/';
+}
+
+const pathNorm = normalizePath(pathname);
+const onHome = pathNorm === home;
+const homeSection = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
+
+const links = [
+  { href: intro, label: copy.nav.introduction },
+  { href: homeSection('research'), label: copy.nav.research },
+  { href: homeSection('framework'), label: copy.nav.frameworks },
+];
+---
+<nav class="pub-nav" data-nav>
+  <div class="navin">
+    <a href={home} class="logo">Dwayne&nbsp;<span class="logo-accent">Locke</span></a>
+
+    <div class="nav-end">
+      <div class="nav-desktop">
+        <div class="navlinks">
+          {links.map((link) => (
+            <a href={link.href}>{link.label}</a>
+          ))}
+        </div>
+        <LanguagePicker pathname={pathname} />
+      </div>
+      <ThemeToggle locale={locale} />
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+        data-nav-toggle
+        data-open-label={copy.nav.menuOpen}
+        data-close-label={copy.nav.menuClose}
+      >
+        <span class="sr-only" data-nav-toggle-label>{copy.nav.menuOpen}</span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="nav-menu" id="nav-menu" data-nav-menu hidden>
+    <div class="nav-menu-inner">
+      <div class="nav-menu-links">
+        {links.map((link) => (
+          <a href={link.href} data-nav-link>{link.label}</a>
+        ))}
+      </div>
+      <div class="nav-menu-lang">
+        <LanguagePicker pathname={pathname} />
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script is:inline>
+  (function () {
+    document.querySelectorAll('[data-nav]').forEach(function (nav) {
+      var toggle = nav.querySelector('[data-nav-toggle]');
+      var menu = nav.querySelector('[data-nav-menu]');
+      if (!toggle || !menu) return;
+
+      var openLabel = toggle.querySelector('[data-nav-toggle-label]');
+      var openText = toggle.getAttribute('data-open-label') || 'Open menu';
+      var closeText = toggle.getAttribute('data-close-label') || 'Close menu';
+
+      function setOpen(open) {
+        nav.classList.toggle('nav-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        menu.hidden = !open;
+        document.body.classList.toggle('nav-menu-open', open);
+        if (openLabel) openLabel.textContent = open ? closeText : openText;
+      }
+
+      toggle.addEventListener('click', function () {
+        setOpen(!nav.classList.contains('nav-open'));
+      });
+
+      menu.querySelectorAll('[data-nav-link]').forEach(function (link) {
+        link.addEventListener('click', function () { setOpen(false); });
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && nav.classList.contains('nav-open')) setOpen(false);
+      });
+
+      window.matchMedia('(min-width: 901px)').addEventListener('change', function (e) {
+        if (e.matches) setOpen(false);
+      });
+    });
+  })();
+</script>

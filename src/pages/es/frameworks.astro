@@ -1,14 +1,14 @@
 ---
-import HomeLayout from '../layouts/HomeLayout.astro';
-import MaturityFramework from '../components/MaturityFramework.astro';
-import { t } from '../i18n';
+import HomeLayout from '../../layouts/HomeLayout.astro';
+import MaturityFramework from '../../components/MaturityFramework.astro';
+import { t } from '../../i18n';
 
-const copy = t('en');
+const copy = t('es');
 ---
 <HomeLayout
   title={copy.meta.frameworksTitle}
   description={copy.meta.frameworksDescription}
-  locale="en"
+  locale="es"
 >
   <section class="pub-framework-page wide">
     <header class="pub-framework-page-head">
@@ -16,6 +16,6 @@ const copy = t('en');
       <h1>{copy.frameworks.title}</h1>
       <p class="pub-framework-page-lede">{copy.frameworks.lede}</p>
     </header>
-    <MaturityFramework locale="en" />
+    <MaturityFramework locale="es" />
   </section>
 </HomeLayout>

@@ -1,0 +1,16 @@
+<script is:inline>
+  (function () {
+    var KEY = 'dl-theme';
+    var root = document.documentElement;
+    function systemTheme() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    try {
+      var stored = localStorage.getItem(KEY);
+      var theme = stored === 'light' || stored === 'dark' ? stored : systemTheme();
+      if (theme === 'dark') root.setAttribute('data-theme', 'dark');
+    } catch (e) {
+      if (systemTheme() === 'dark') root.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>

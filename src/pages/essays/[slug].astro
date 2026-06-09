@@ -1,9 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Newsletter from '../../components/Newsletter.astro';
+import FollowStrip from '../../components/FollowStrip.astro';
+import { t } from '../../i18n';
+import { essayTitle, essayDescription } from '../../i18n/essay-meta';
 
-// Generate one page per published (non-draft) essay.
 export async function getStaticPaths() {
   const essays = await getCollection('essays', ({ data }) => !data.draft);
   return essays.map((entry) => ({
@@ -14,20 +15,21 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+const copy = t('en');
 const dateStr = entry.data.pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
 ---
-<BaseLayout title={`${entry.data.title} — Dwayne Locke`} description={entry.data.description}>
+<BaseLayout title={`${essayTitle(entry.data, 'en')} — Dwayne Locke`} description={essayDescription(entry.data, 'en')} locale="en">
   <article class="wrap essay" style="border-top:none">
-    <div class="essay-tag">Essay</div>
-    <h1 class="essay-title">{entry.data.title}</h1>
-    <div class="meta">By Dwayne Locke · {dateStr}</div>
+    <div class="essay-tag">{copy.essay.tag}</div>
+    <h1 class="essay-title">{essayTitle(entry.data, 'en')}</h1>
+    <div class="meta">{copy.essay.byline} · {dateStr}</div>
     <Content />
-    <a href="/#essays" class="backlink">‹ All writing</a>
+    <a href="/#essays" class="backlink">{copy.essay.backLink}</a>
   </article>
 
-  <Newsletter />
+  <FollowStrip locale="en" />
 </BaseLayout>

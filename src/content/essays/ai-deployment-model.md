@@ -1,6 +1,8 @@
 ---
-title: "I Think AI Is Creating a New Deployment Model"
+title: "When organizations produce capability instead of buying it"
 description: "Organizations used to buy capability and deploy it. With AI, they're increasingly producing capability — and the deployment lifecycle looks nothing like a SaaS rollout."
+titleEs: "Cuando las organizaciones producen capacidad en lugar de comprarla"
+descriptionEs: "Las organizaciones solían comprar capacidad y desplegarla. Con la IA, cada vez más la producen — y el ciclo de vida del despliegue no se parece a un rollout de SaaS."
 pubDate: 2026-06-08
 draft: false
 order: 5

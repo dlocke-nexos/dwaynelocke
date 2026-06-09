@@ -1,19 +1,38 @@
 ---
+import LanguagePicker from './LanguagePicker.astro';
 import { site } from '../site';
+import { t, type Locale, homePath, anchorPath } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+  pathname?: string;
+}
+const locale = Astro.props.locale ?? 'en';
+const pathname = Astro.props.pathname ?? Astro.url.pathname;
+const copy = t(locale);
+const home = homePath(locale);
+const intro = anchorPath(locale);
+const pathNorm =
+  pathname.endsWith('/') && pathname.length > 1 ? pathname.slice(0, -1) : pathname || '/';
+const onHome = pathNorm === home;
 ---
 <footer class="pub-footer" id="about">
   <div class="pub-footer-inner wide">
     <div class="pub-footer-bio">
       <p class="pub-footer-name">Dwayne Locke</p>
-      <p class="pub-footer-tagline">
-        Enterprise transformation practitioner exploring how AI changes the way organizations scale.
-      </p>
+      <p class="pub-footer-tagline">{copy.footer.tagline}</p>
     </div>
-    <nav class="pub-footer-links" aria-label="Footer">
-      {site.linkedin && <a href={site.linkedin} rel="noopener noreferrer">LinkedIn</a>}
-      <a href="/#essays">Articles</a>
-      <a href="/home#about">About</a>
-      <a href="/home#field-notes">Field Notes</a>
-    </nav>
+    <div class="pub-footer-end">
+      <nav class="pub-footer-links" aria-label="Footer">
+        {site.linkedin && <a href={site.linkedin} rel="noopener noreferrer">{copy.footer.linkedin}</a>}
+        <a href={intro}>{copy.footer.introduction}</a>
+        <a href={`${intro}#essays`}>{copy.footer.allWriting}</a>
+        <a href={onHome ? '#research' : `${home}#research`}>{copy.footer.research}</a>
+        <a href={`${home}#field-notes`}>{copy.footer.fieldNotes}</a>
+      </nav>
+      <div class="pub-footer-lang">
+        <LanguagePicker pathname={pathname} />
+      </div>
+    </div>
   </div>
 </footer>

@@ -1,0 +1,273 @@
+---
+import { getCollection } from 'astro:content';
+import FieldNotes from './FieldNotes.astro';
+import HeroCollage from './HeroCollage.astro';
+import ExploreVisual from './ExploreVisual.astro';
+import ResearchVisual from './ResearchVisual.astro';
+import PersonPlaceholder from './PersonPlaceholder.astro';
+import FrameworkTeaserVisual from './FrameworkTeaserVisual.astro';
+import {
+  t,
+  type Locale,
+  anchorPath,
+  essayPath,
+  frameworksPath,
+} from '../i18n';
+import { essayTitle, essayDescription } from '../i18n/essay-meta';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const copy = t(locale);
+
+const all = (await getCollection('essays')).sort(
+  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+);
+const anchor = all.find((e) => !e.data.draft);
+if (!anchor) throw new Error('No published anchor essay found in src/content/essays/.');
+
+function readTime(body: string): number {
+  const words = body.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+function formatDate(date: Date): string {
+  const tag = locale === 'es' ? 'es-ES' : 'en-US';
+  return date.toLocaleDateString(tag, { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+const exploringItems = copy.home.exploring.items;
+
+const research = all.filter((e) => e.data.showInResearch !== false).slice(0, 6);
+---
+<section class="pub-hero wide" id="top">
+  <div class="pub-hero-inner">
+    <div class="pub-hero-copy">
+      <h1>{copy.home.hero.title}</h1>
+      <p class="pub-hero-lede">{copy.home.hero.lede}</p>
+      <p class="pub-hero-sub">{copy.home.hero.sub}</p>
+      <div class="pub-hero-ctas">
+        <a class="btn" href={anchorPath(locale)}>{copy.home.hero.ctaIntro}</a>
+        <a class="btn ghost" href="#research">{copy.home.hero.ctaResearch}</a>
+      </div>
+    </div>
+    <HeroCollage />
+  </div>
+</section>
+
+<section class="pub-start wide">
+  <div class="pub-sec-head">
+    <h2>{copy.home.startHere}</h2>
+  </div>
+  <a class="pub-featured pub-featured--thumb" href={anchorPath(locale)}>
+    <div class="pub-featured-visual pub-featured-visual--photo">
+      <div class="pub-photo-deco" aria-hidden="true">
+        <svg viewBox="0 0 400 280" fill="none" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="280" fill="var(--paper-2)" />
+          <circle cx="320" cy="60" r="80" fill="var(--accent-bg)" opacity="0.7" />
+          <circle cx="60" cy="220" r="60" fill="var(--good)" opacity="0.1" />
+          <path d="M40 140 L360 140" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="6 4" />
+          <path d="M200 40 L200 240" stroke="var(--line)" stroke-width="0.5" stroke-dasharray="6 4" />
+          <rect x="280" y="180" width="72" height="48" rx="8" fill="var(--card)" stroke="var(--accent-soft)" stroke-width="0.5" opacity="0.6" />
+          <rect x="48" y="48" width="56" height="40" rx="6" fill="var(--accent-bg)" stroke="var(--line)" stroke-width="0.5" opacity="0.5" />
+        </svg>
+      </div>
+      <div class="pub-photo-wrap">
+        <PersonPlaceholder size="featured" />
+      </div>
+      <div class="pub-featured-thumb-tag">{copy.home.introduction}</div>
+    </div>
+    <div class="pub-featured-body">
+      <p class="pub-featured-label">{copy.home.featuredLabel}</p>
+      <h3>{essayTitle(anchor.data, locale)}</h3>
+      <p class="pub-featured-excerpt">{essayDescription(anchor.data, locale)}</p>
+      <span class="pub-featured-link">{copy.home.readArticle}</span>
+    </div>
+  </a>
+</section>
+
+<section class="pub-exploring wide" id="exploring">
+  <div class="pub-sec-head">
+    <h2>{copy.home.exploring.title}</h2>
+    <p class="pub-sec-sub">{copy.home.exploring.sub}</p>
+  </div>
+  <div class="pub-explore-carousel-wrap">
+    <div class="pub-explore-carousel" data-hscroll-carousel data-hscroll-card=".pub-explore-card">
+      <button
+        type="button"
+        class="pub-explore-nav pub-explore-nav--prev"
+        data-hscroll-prev
+        aria-label={copy.home.exploring.scrollPrev}
+        disabled
+      >
+        <span aria-hidden="true">&#8592;</span>
+      </button>
+      <div class="pub-explore-scroll-wrap">
+        <div class="pub-explore-fade pub-explore-fade--left" aria-hidden="true"></div>
+        <div
+          class="pub-explore-scroll"
+          data-hscroll-scroll
+          tabindex="0"
+          aria-label={copy.home.exploring.title}
+        >
+          <div class="pub-explore-track">
+            {exploringItems.map((area, i) => (
+              <>
+                <article class="pub-explore-card" id={area.id}>
+                  <div class="pub-explore-step">{copy.home.exploring.step} {i + 1}</div>
+                  <ExploreVisual topic={area.id} />
+                  <div class="pub-explore-body">
+                    <h3>{area.title}</h3>
+                    <p>{area.body}</p>
+                  </div>
+                </article>
+                {i < exploringItems.length - 1 && (
+                  <span class="pub-explore-connector" aria-hidden="true">→</span>
+                )}
+              </>
+            ))}
+          </div>
+        </div>
+        <div class="pub-explore-fade pub-explore-fade--right" aria-hidden="true"></div>
+      </div>
+      <button
+        type="button"
+        class="pub-explore-nav pub-explore-nav--next"
+        data-hscroll-next
+        aria-label={copy.home.exploring.scrollNext}
+      >
+        <span aria-hidden="true">&#8594;</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="pub-research" id="research">
+  <div class="wide">
+    <div class="pub-sec-head">
+      <h2>{copy.home.research.title}</h2>
+      <p class="pub-sec-sub">{copy.home.research.sub}</p>
+    </div>
+  </div>
+  <div class="wide pub-research-carousel-wrap">
+    <div class="pub-research-carousel" data-hscroll-carousel data-hscroll-card=".pub-research-card">
+      <button
+        type="button"
+        class="pub-research-nav pub-research-nav--prev"
+        data-hscroll-prev
+        aria-label={copy.home.research.scrollPrev}
+        disabled
+      >
+        <span aria-hidden="true">&#8592;</span>
+      </button>
+      <div class="pub-research-scroll-wrap">
+        <div class="pub-research-fade pub-research-fade--left" aria-hidden="true"></div>
+        <div
+          class="pub-research-scroll"
+          data-hscroll-scroll
+          tabindex="0"
+          aria-label={copy.home.research.title}
+        >
+          <div class="pub-research-track">
+    {research.map((entry) => (
+      entry.data.draft ? (
+        <div class="pub-research-card" id={`research-${entry.slug}`}>
+          <ResearchVisual slug={entry.slug} draft />
+          <div class="pub-research-body">
+            <h3>{essayTitle(entry.data, locale)}</h3>
+            <p class="pub-research-excerpt">{essayDescription(entry.data, locale)}</p>
+          </div>
+        </div>
+      ) : (
+        <a
+          class="pub-research-card"
+          href={essayPath(entry.slug, locale, entry.slug === anchor.slug)}
+          id={`research-${entry.slug}`}
+        >
+          <ResearchVisual slug={entry.slug} />
+          <div class="pub-research-body">
+            <p class="pub-research-meta">
+              {formatDate(entry.data.pubDate)} · {readTime(entry.body)} {copy.home.research.minRead}
+            </p>
+            <h3>{essayTitle(entry.data, locale)}</h3>
+            <p class="pub-research-excerpt">{essayDescription(entry.data, locale)}</p>
+            <span class="pub-research-link">{copy.home.research.read}</span>
+          </div>
+        </a>
+      )
+    ))}
+          </div>
+        </div>
+        <div class="pub-research-fade pub-research-fade--right" aria-hidden="true"></div>
+      </div>
+      <button
+        type="button"
+        class="pub-research-nav pub-research-nav--next"
+        data-hscroll-next
+        aria-label={copy.home.research.scrollNext}
+      >
+        <span aria-hidden="true">&#8594;</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    document.querySelectorAll('[data-hscroll-carousel]').forEach(function (carousel) {
+      var scroll = carousel.querySelector('[data-hscroll-scroll]');
+      var prev = carousel.querySelector('[data-hscroll-prev]');
+      var next = carousel.querySelector('[data-hscroll-next]');
+      var cardSel = carousel.getAttribute('data-hscroll-card') || '.pub-research-card';
+      if (!scroll || !prev || !next) return;
+
+      function step() {
+        var card = scroll.querySelector(cardSel);
+        var track = scroll.querySelector('[class*="-track"]');
+        var gap = 18;
+        if (track && card) {
+          var style = window.getComputedStyle(track);
+          gap = parseFloat(style.columnGap || style.gap) || 18;
+        }
+        return card ? card.offsetWidth + gap : 300;
+      }
+
+      function update() {
+        var max = scroll.scrollWidth - scroll.clientWidth;
+        var left = scroll.scrollLeft;
+        var overflow = max > 2;
+        carousel.classList.toggle('has-overflow', overflow);
+        carousel.classList.toggle('at-start', left <= 2);
+        carousel.classList.toggle('at-end', left >= max - 2);
+        prev.disabled = !overflow || left <= 2;
+        next.disabled = !overflow || left >= max - 2;
+      }
+
+      prev.addEventListener('click', function () {
+        scroll.scrollBy({ left: -step(), behavior: 'smooth' });
+      });
+      next.addEventListener('click', function () {
+        scroll.scrollBy({ left: step(), behavior: 'smooth' });
+      });
+      scroll.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    });
+  })();
+</script>
+
+<section class="pub-framework-teaser wide" id="framework">
+  <a class="pub-framework-card" href={frameworksPath(locale)}>
+    <div class="pub-framework-copy">
+      <div class="pub-sec-head">
+        <h2>{copy.home.framework.title}</h2>
+        <p class="pub-sec-sub">{copy.home.framework.sub}</p>
+      </div>
+      <span class="pub-framework-link">{copy.home.framework.cta}</span>
+    </div>
+    <FrameworkTeaserVisual />
+  </a>
+</section>
+
+<FieldNotes locale={locale} />

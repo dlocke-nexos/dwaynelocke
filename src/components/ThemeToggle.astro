@@ -1,0 +1,71 @@
+---
+import { t, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+const locale = Astro.props.locale ?? 'en';
+const copy = t(locale);
+---
+<button
+  type="button"
+  class="theme-toggle"
+  data-theme-toggle
+  data-label-light={copy.theme.light}
+  data-label-dark={copy.theme.dark}
+  aria-label={copy.theme.light}
+  aria-pressed="false"
+>
+  <span class="theme-toggle-track" aria-hidden="true">
+    <span class="theme-toggle-thumb">
+      <svg class="theme-toggle-icon theme-toggle-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+      </svg>
+      <svg class="theme-toggle-icon theme-toggle-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 6.5 6.5 0 0 0 21 14.5z" />
+      </svg>
+    </span>
+    <svg class="theme-toggle-ghost theme-toggle-ghost--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+    </svg>
+    <svg class="theme-toggle-ghost theme-toggle-ghost--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 6.5 6.5 0 0 0 21 14.5z" />
+    </svg>
+  </span>
+</button>
+
+<script is:inline>
+  (function () {
+    var KEY = 'dl-theme';
+    var root = document.documentElement;
+
+    function isDark() {
+      return root.getAttribute('data-theme') === 'dark';
+    }
+
+    function syncButtons() {
+      var dark = isDark();
+      document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+        btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+        btn.setAttribute(
+          'aria-label',
+          dark ? btn.getAttribute('data-label-dark') : btn.getAttribute('data-label-light')
+        );
+      });
+    }
+
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var next = isDark() ? 'light' : 'dark';
+        if (next === 'dark') root.setAttribute('data-theme', 'dark');
+        else root.removeAttribute('data-theme');
+        try { localStorage.setItem(KEY, next); } catch (e) {}
+        syncButtons();
+      });
+    });
+
+    syncButtons();
+  })();
+</script>

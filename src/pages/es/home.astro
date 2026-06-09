@@ -1,0 +1,8 @@
+---
+import HomeLayout from '../../layouts/HomeLayout.astro';
+import HomePage from '../../components/HomePage.astro';
+import { t } from '../../i18n';
+---
+<HomeLayout title={t('es').meta.homeTitle} locale="es">
+  <HomePage locale="es" />
+</HomeLayout>

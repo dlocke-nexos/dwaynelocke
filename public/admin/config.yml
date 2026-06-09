@@ -24,6 +24,8 @@ collections:
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Description, name: description, widget: text }
+      - { label: Title (Spanish), name: titleEs, widget: string, required: false }
+      - { label: Description (Spanish), name: descriptionEs, widget: text, required: false }
       - { label: Publish Date, name: pubDate, widget: datetime }
       - { label: Draft, name: draft, widget: boolean, default: false, hint: 'Draft essays show as Coming soon and have no public page.' }
       - { label: Order, name: order, widget: number, required: false, hint: 'Lower number = higher in lists. Leave blank for default.' }

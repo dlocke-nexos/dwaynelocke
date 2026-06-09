@@ -1,47 +1,54 @@
 ---
-import {
-  structureLayers,
-  functions,
-  evolutionStages,
-  intersections,
-} from './framework-data';
+import { t, type Locale } from '../i18n';
+import { getFrameworkData } from './framework-data';
+
+interface Props {
+  locale?: Locale;
+}
+const locale = Astro.props.locale ?? 'en';
+const ui = t(locale).frameworkTool;
+const { structureLayers, functions, evolutionStages, intersections } = getFrameworkData(locale);
+
+const defaultFn = functions.find((f) => f.id === 'sales') ?? functions[0];
+const defaultStage = evolutionStages.find((s) => s.id === 'human') ?? evolutionStages[0];
+const defaultCell = intersections[defaultFn.id]?.[defaultStage.id];
+const defaultKicker = `${ui.kickerIntersection} · ${defaultFn.label} × ${defaultStage.title}`;
+const defaultTitle = defaultCell?.headline ?? '';
 ---
 
 <div class="fw-model">
   <div class="fw-thesis">
-    <p class="fw-thesis-lead">
-      Two dimensions, independent of each other. They don&rsquo;t stack into a single ladder.
-    </p>
+    <p class="fw-thesis-lead">{ui.thesisLead}</p>
     <p class="fw-thesis-body">
-      <strong>Structure</strong> is what the organization is made of.
-      <strong>Evolution</strong> is where capability migrates as each layer matures.
-      Hover a function for purpose and activities. Hover a stage for where capability lives.
-      Hover the <em>intersection</em> to see how a specific department operates at a specific stage.
+      <strong>{ui.structureWord}</strong>{ui.structureDesc}
+      <strong>{ui.evolutionWord}</strong>{ui.evolutionDesc}
+      {ui.thesisHoverFn}
+      {ui.thesisHoverCell}<em>{ui.thesisIntersection}</em>{ui.thesisHoverEnd}
     </p>
   </div>
 
-  <div class="fw-tabs" role="tablist" aria-label="Framework dimensions">
+  <div class="fw-tabs" role="tablist" aria-label={ui.tabsAria}>
     <button type="button" class="fw-tab active" data-tab="structure" role="tab" aria-selected="true" id="fw-tab-structure">
-      <span class="fw-tab-axis">Dimension 1</span>
-      <span class="fw-tab-title">Structure</span>
-      <span class="fw-tab-sub">What the org is made of</span>
+      <span class="fw-tab-axis">{ui.dim1}</span>
+      <span class="fw-tab-title">{ui.structureTab}</span>
+      <span class="fw-tab-sub">{ui.structureTabSub}</span>
     </button>
     <button type="button" class="fw-tab" data-tab="evolution" role="tab" aria-selected="false" id="fw-tab-evolution">
-      <span class="fw-tab-axis">Dimension 2</span>
-      <span class="fw-tab-title">Evolution</span>
-      <span class="fw-tab-sub">Where capability migrates</span>
+      <span class="fw-tab-axis">{ui.dim2}</span>
+      <span class="fw-tab-title">{ui.evolutionTab}</span>
+      <span class="fw-tab-sub">{ui.evolutionTabSub}</span>
     </button>
   </div>
 
   <section class="fw-panel fw-panel--structure active" id="fw-panel-structure" role="tabpanel" aria-labelledby="fw-tab-structure">
     <div class="fw-structure-meta">
-      <p class="fw-structure-rise"><span aria-hidden="true">&uarr;</span> Capability rises through every layer</p>
-      <p class="fw-structure-stable">Functions stay stable — everything above them transforms</p>
+      <p class="fw-structure-rise"><span aria-hidden="true">&uarr;</span> {ui.structureRise}</p>
+      <p class="fw-structure-stable">{ui.structureStable}</p>
     </div>
     <div class="fw-structure">
-      <div class="fw-spine" aria-label="Governance and data">
-        <span class="fw-spine-label">Governance &amp; data</span>
-        <span class="fw-spine-sub">Policies, controls, decision rights</span>
+      <div class="fw-spine" aria-label={ui.spineAria}>
+        <span class="fw-spine-label">{ui.spineLabel}</span>
+        <span class="fw-spine-sub">{ui.spineSub}</span>
       </div>
       <div class="fw-stack">
         {structureLayers.map((layer) => (
@@ -56,12 +63,12 @@ import {
             {layer.split ? (
               <div class="fw-split">
                 <div class="fw-split-half">
-                  <strong>{layer.left.label}</strong>
-                  <span>{layer.left.sub}</span>
+                  <strong>{layer.left!.label}</strong>
+                  <span>{layer.left!.sub}</span>
                 </div>
                 <div class="fw-split-half">
-                  <strong>{layer.right.label}</strong>
-                  <span>{layer.right.sub}</span>
+                  <strong>{layer.right!.label}</strong>
+                  <span>{layer.right!.sub}</span>
                 </div>
               </div>
             ) : (
@@ -74,8 +81,8 @@ import {
         ))}
         <div class="fw-stack-layer fw-stack-layer--functions" id="fw-functions-layer">
           <div class="fw-functions-row">
-            <span class="fw-functions-label">Functions</span>
-            <div class="fw-pills" role="group" aria-label="Business functions">
+            <span class="fw-functions-label">{ui.functionsLabel}</span>
+            <div class="fw-pills" role="group" aria-label={ui.functionsAria}>
               {functions.map((fn, i) => (
                 <button
                   type="button"
@@ -96,13 +103,11 @@ import {
   <section class="fw-panel fw-panel--evolution" id="fw-panel-evolution" role="tabpanel" aria-labelledby="fw-tab-evolution" hidden>
     <div class="fw-evolution-intro">
       <p>
-        Last 30 years: digitize <em>information</em>.
-        Next 30 years: digitize <em>capability</em>.
-        The human role shifts from doing the work to governing it.
+        {ui.evolutionIntroBefore}<em>{ui.evolutionIntroInfo}</em>{ui.evolutionIntroMid}<em>{ui.evolutionIntroCap}</em>{ui.evolutionIntroAfter}
       </p>
     </div>
-    <p class="fw-capability-heading">Where capability sits at each stage</p>
-    <div class="fw-timeline" role="tablist" aria-label="Capability evolution">
+    <p class="fw-capability-heading">{ui.capabilityHeading}</p>
+    <div class="fw-timeline" role="tablist" aria-label={ui.timelineAria}>
       {evolutionStages.map((stage, i) => [
         i > 0 ? <div class="fw-timeline-arrow" aria-hidden="true">&rarr;</div> : null,
         <button
@@ -112,7 +117,7 @@ import {
           data-id={stage.id}
           role="tab"
         >
-          <span class="fw-stage-num">Stage {stage.num}</span>
+          <span class="fw-stage-num">{ui.stageLabel} {stage.num}</span>
           <strong>{stage.title}</strong>
           <span class="fw-stage-sub">{stage.sub}</span>
           <span class="fw-stage-cap">{stage.capability}</span>
@@ -121,14 +126,14 @@ import {
     </div>
   </section>
 
-  <section class="fw-explorer" aria-label="Function and stage explorer">
+  <section class="fw-explorer" aria-label={ui.explorerAria}>
     <p class="fw-explorer-hint">
-      Explore <strong>function &times; stage</strong> — the intersection is where the framework gets specific.
+      {ui.explorerHintBefore}<strong>{ui.explorerHintMiddle}</strong>{ui.explorerHintAfter}
     </p>
     <div class="fw-explorer-rows">
       <div class="fw-explorer-row">
-        <span class="fw-explorer-label">Function</span>
-        <div class="fw-pills fw-pills--explorer" role="group" aria-label="Select function">
+        <span class="fw-explorer-label">{ui.functionLabel}</span>
+        <div class="fw-pills fw-pills--explorer" role="group" aria-label={ui.functionSelectAria}>
           {functions.map((fn, i) => (
             <button type="button" class={`fw-pill fw-pill--fn${i === 1 ? ' active' : ''}`} data-kind="function" data-id={fn.id}>
               {fn.label}
@@ -137,8 +142,8 @@ import {
         </div>
       </div>
       <div class="fw-explorer-row">
-        <span class="fw-explorer-label">Stage</span>
-        <div class="fw-pills fw-pills--explorer" role="group" aria-label="Select stage">
+        <span class="fw-explorer-label">{ui.stageSelectLabel}</span>
+        <div class="fw-pills fw-pills--explorer" role="group" aria-label={ui.stageSelectAria}>
           {evolutionStages.map((stage, i) => (
             <button type="button" class={`fw-pill fw-pill--stage${i === 0 ? ' active' : ''}`} data-kind="stage" data-id={stage.id}>
               {stage.num}. {stage.capability}
@@ -149,8 +154,8 @@ import {
     </div>
 
     <div class="fw-matrix-wrap">
-      <p class="fw-matrix-label">Intersection grid — hover a cell</p>
-      <div class="fw-matrix" role="grid" aria-label="Function by stage intersection">
+      <p class="fw-matrix-label">{ui.matrixLabel}</p>
+      <div class="fw-matrix" role="grid" aria-label={ui.matrixAria}>
         <div class="fw-matrix-head" role="row">
           <div class="fw-matrix-corner" role="columnheader"></div>
           {evolutionStages.map((stage) => (
@@ -168,7 +173,7 @@ import {
                 data-kind="cell"
                 data-fn={fn.id}
                 data-stage={stage.id}
-                aria-label={`${fn.label} at ${stage.title}`}
+                aria-label={`${fn.label} ${ui.cellAriaAt} ${stage.title}`}
               />
             ))}
           </div>
@@ -177,14 +182,14 @@ import {
     </div>
 
     <div class="fw-panel-detail fw-panel-detail--explore" id="fw-explore-detail" role="region" aria-live="polite">
-      <div class="fw-detail-kicker" id="fw-detail-kicker">Intersection &middot; Sales &times; Human driven</div>
-      <h3 class="fw-detail-title" id="fw-detail-title">Knowledge lives in the salesperson.</h3>
+      <div class="fw-detail-kicker" id="fw-detail-kicker">{defaultKicker}</div>
+      <h3 class="fw-detail-title" id="fw-detail-title">{defaultTitle}</h3>
       <div class="fw-detail-content" id="fw-detail-content"></div>
     </div>
   </section>
 </div>
 
-<script define:vars={{ functions, evolutionStages, intersections, structureLayers }}>
+<script define:vars={{ functions, evolutionStages, intersections, ui }}>
   const state = {
     fn: 'sales',
     stage: 'human',
@@ -236,7 +241,7 @@ import {
     const content = document.getElementById('fw-detail-content');
 
     if (state.mode === 'structure') {
-      kicker.textContent = 'Structure';
+      kicker.textContent = ui.kickerStructure;
       title.textContent = state.structureTitle;
       content.innerHTML = `<p class="fw-detail-body">${state.structureBody}</p>`;
       return;
@@ -247,35 +252,35 @@ import {
       const stage = stageMap[state.stage];
       const cell = intersections[state.fn]?.[state.stage];
       if (!fn || !stage || !cell) return;
-      kicker.textContent = `Intersection · ${fn.label} × ${stage.title}`;
+      kicker.textContent = `${ui.kickerIntersection} · ${fn.label} × ${stage.title}`;
       title.textContent = cell.headline;
       content.innerHTML =
-        listHtml('How work runs', cell.operations) +
-        listHtml('Metrics to watch', cell.metrics);
+        listHtml(ui.howWorkRuns, cell.operations) +
+        listHtml(ui.metricsToWatch, cell.metrics);
       return;
     }
 
     if (state.mode === 'function' && state.fn) {
       const fn = fnMap[state.fn];
       if (!fn) return;
-      kicker.textContent = `Function · ${fn.label}`;
+      kicker.textContent = `${ui.kickerFunction} · ${fn.label}`;
       title.textContent = fn.purpose;
       content.innerHTML =
-        `<p class="fw-detail-purpose"><strong>Purpose:</strong> ${fn.purpose}</p>` +
-        listHtml('Core activities', fn.activities) +
-        listHtml('Key metrics', fn.metrics);
+        `<p class="fw-detail-purpose"><strong>${ui.purposeLabel}</strong> ${fn.purpose}</p>` +
+        listHtml(ui.coreActivities, fn.activities) +
+        listHtml(ui.keyMetrics, fn.metrics);
       return;
     }
 
     if (state.mode === 'stage' && state.stage) {
       const stage = stageMap[state.stage];
       if (!stage) return;
-      kicker.textContent = `Evolution · Stage ${stage.num}`;
+      kicker.textContent = `${ui.kickerEvolution} · ${ui.kickerStage} ${stage.num}`;
       title.textContent = stage.title;
       content.innerHTML =
         `<p class="fw-detail-body">${stage.capabilityLocation}</p>` +
-        listHtml('How work is performed', [stage.howWorkPerformed]) +
-        listHtml('What changes operationally', [stage.operationalChange]);
+        listHtml(ui.howWorkPerformed, [stage.howWorkPerformed]) +
+        listHtml(ui.whatChanges, [stage.operationalChange]);
     }
   }
 

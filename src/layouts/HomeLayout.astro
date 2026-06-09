@@ -1,23 +1,28 @@
 ---
 import '../styles/global.css';
-import HomeNav from '../components/HomeNav.astro';
+import ThemeInit from '../components/ThemeInit.astro';
+import PubNav from '../components/PubNav.astro';
 import HomeFooter from '../components/HomeFooter.astro';
 import Assessment from '../components/Assessment.astro';
-import LanguagePicker from '../components/LanguagePicker.astro';
+import { t, type Locale } from '../i18n';
 
 interface Props {
   title: string;
   description?: string;
+  locale?: Locale;
 }
+const locale = Astro.props.locale ?? 'en';
+const copy = t(locale);
 const {
   title,
-  description = 'How organizations scale in the age of AI — a publication exploring dependency, process, and the operating models that come next.',
+  description = copy.meta.homeDescription,
 } = Astro.props;
 ---
 <!DOCTYPE html>
-<html lang="en">
+<html lang={locale}>
 <head>
   <meta charset="UTF-8" />
+  <ThemeInit />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
@@ -33,7 +38,6 @@ const {
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,400i;9..144,500i&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  {/* Netlify Identity invite/recovery links must land on /admin/ where the widget loads */}
   <script is:inline>
     if (/recovery_token|invite_token|confirmation_token/.test(location.hash)) {
       location.replace('/admin/' + location.hash);
@@ -41,10 +45,9 @@ const {
   </script>
 </head>
 <body>
-  <HomeNav />
+  <PubNav locale={locale} pathname={Astro.url.pathname} />
   <slot />
-  <HomeFooter />
-  <LanguagePicker />
+  <HomeFooter locale={locale} pathname={Astro.url.pathname} />
   <Assessment />
 </body>
 </html>
