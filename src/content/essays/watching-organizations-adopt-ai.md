@@ -1,5 +1,5 @@
 ---
-title: "I Spent 15 Years Watching Organizations Adopt Cloud Software. Now I'm Watching Them Adopt AI."
+title: "I spent 15 years watching organizations adopt cloud software. Now I'm watching them adopt AI."
 description: "Why the bottleneck was never the software — and what changes when technology starts performing work, not just documenting it."
 titleEs: "Pasé 15 años viendo cómo las organizaciones adoptan software en la nube. Ahora las veo adoptar IA."
 descriptionEs: "Por qué el cuello de botella nunca fue el software — y qué cambia cuando la tecnología empieza a ejecutar el trabajo, no solo documentarlo."
