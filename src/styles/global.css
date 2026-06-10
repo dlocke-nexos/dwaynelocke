@@ -22,7 +22,7 @@
   --photo-filter:none;
   --serif:'Fraunces',Georgia,serif;
   --sans:'Outfit',system-ui,sans-serif;
-  --page-pad:clamp(24px,5vw,40px);
+  --page-pad:clamp(28px,6vw,40px);
 }
 [data-theme="dark"]{
   color-scheme:dark;
@@ -127,13 +127,16 @@ body.nav-menu-open{overflow:hidden}
 .essay h1.essay-title{font-family:var(--serif);font-weight:500;font-size:clamp(26px,3.6vw,38px);line-height:1.18;letter-spacing:-0.02em;margin:0 auto 16px;text-align:center;max-width:22ch}
 .essay .meta{text-align:center;font-size:13px;color:var(--ink-faint);margin-bottom:48px}
 .essay p{font-size:18px;color:var(--ink);margin:0 0 22px;line-height:1.7}
-.essay > p:first-of-type{font-size:20px;color:var(--ink-soft);line-height:1.6} /* lede */
+/* first paragraph matches body — the hero standfirst now serves as the lede, so the body stays visually consistent (EN + ES) */
 .essay h2,.essay h3{font-family:var(--serif);font-weight:500;font-size:23px;margin:42px 0 14px;letter-spacing:-0.01em}
 .essay ul{margin:0 0 22px;padding-left:0;list-style:none}
 .essay ul li{font-size:18px;padding:4px 0 4px 22px;position:relative;color:var(--ink)}
 .essay ul li::before{content:"";position:absolute;left:0;top:15px;width:5px;height:5px;border-radius:50%;background:var(--accent-soft)}
 .essay blockquote{font-family:var(--serif);font-style:italic;font-size:23px;line-height:1.4;color:var(--accent);border-left:2px solid var(--accent-soft);padding:6px 0 6px 22px;margin:34px 0}
 .essay blockquote p{font-size:23px;color:var(--accent);margin:0}
+.essay-figure{margin:40px 0}
+.essay-figure svg{width:100%;height:auto;display:block;border-radius:14px;border:0.5px solid var(--line)}
+.essay-figure figcaption{margin:16px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55}
 .essay a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
 
 /* inline assessment cta (quiet, mid-essay) */
@@ -231,7 +234,7 @@ body.nav-menu-open{overflow:hidden}
 .pub-explore-carousel:not(.has-overflow){grid-template-columns:1fr}
 .pub-explore-carousel:not(.has-overflow) .pub-explore-nav{display:none}
 .pub-explore-scroll-wrap{position:relative;min-width:0}
-.pub-explore-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--accent-soft) transparent;padding-bottom:4px}
+.pub-explore-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:var(--accent-soft) transparent;padding-bottom:4px}
 .pub-explore-carousel.has-overflow .pub-explore-scroll{scrollbar-width:none}
 .pub-explore-carousel.has-overflow .pub-explore-scroll::-webkit-scrollbar{display:none}
 .pub-explore-scroll:focus-visible{outline:2px solid var(--accent-soft);outline-offset:4px}
@@ -275,7 +278,7 @@ body.nav-menu-open{overflow:hidden}
 .pub-research-carousel:not(.has-overflow){grid-template-columns:1fr}
 .pub-research-carousel:not(.has-overflow) .pub-research-nav{display:none}
 .pub-research-scroll-wrap{position:relative;min-width:0}
-.pub-research-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--accent-soft) transparent;padding-bottom:4px}
+.pub-research-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:var(--accent-soft) transparent;padding-bottom:4px}
 .pub-research-carousel.has-overflow .pub-research-scroll{scrollbar-width:none}
 .pub-research-carousel.has-overflow .pub-research-scroll::-webkit-scrollbar{display:none}
 .pub-research-scroll::-webkit-scrollbar{height:6px}
@@ -553,8 +556,14 @@ html[lang="es"] .pitem.soon .pt::after{content:" — próximamente"}
   .pub-explore-nav,.pub-research-nav{display:none}
   .pub-explore-carousel-wrap{margin-inline:calc(-1 * var(--page-pad))}
   .pub-explore-track,.pub-research-track{padding-inline:var(--page-pad);gap:14px}
-  .pub-explore-scroll,.pub-research-scroll{scroll-padding-inline:var(--page-pad)}
+  .pub-explore-scroll,.pub-research-scroll{scroll-padding-inline:var(--page-pad);overflow-x:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x}
   .pub-explore-card,.pub-research-card{flex:0 0 min(300px,calc(100vw - 2 * var(--page-pad) - 24px))}
+  /* Mobile: nav arrows are hidden, so FORCE a visible scrollbar as the scroll affordance,
+     independent of the JS .has-overflow flag (overrides the desktop scrollbar-hiding). */
+  .pub-explore-scroll,.pub-research-scroll{overflow-x:scroll;scrollbar-width:thin!important;scrollbar-color:var(--accent-soft) transparent}
+  .pub-explore-scroll::-webkit-scrollbar,.pub-research-scroll::-webkit-scrollbar{display:block!important;-webkit-appearance:none;height:8px}
+  .pub-explore-scroll::-webkit-scrollbar-track,.pub-research-scroll::-webkit-scrollbar-track{background:transparent}
+  .pub-explore-scroll::-webkit-scrollbar-thumb,.pub-research-scroll::-webkit-scrollbar-thumb{background:var(--accent-soft);border-radius:999px}
   .fw-detail-content{grid-template-columns:1fr}
   .fw-explorer{padding:22px 20px}
   .fw-matrix{grid-template-columns:72px repeat(5,1fr)}

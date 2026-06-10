@@ -161,8 +161,44 @@ const { slug, draft = false } = Astro.props;
     </svg>
   )}
 
+  {slug === 'business-processes-vs-ai-skills' && (
+    <svg viewBox="0 0 320 160" fill="none" class="rv-svg">
+      <rect width="320" height="160" fill="var(--paper-2)" />
+      {/* SaaS · business process — a swimlane of human steps */}
+      <text x="14" y="22" fill="var(--accent)" font-family="var(--sans)" font-size="7.5" font-weight="600" letter-spacing="0.09em">SAAS · PROCESS</text>
+      <path d="M20 32 V102" stroke="var(--line)" stroke-width="1" />
+      <rect x="14" y="32" width="126" height="20" rx="5" fill="var(--card)" stroke="var(--line)" stroke-width="1" />
+      <circle cx="26" cy="42" r="4" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.1" />
+      <text x="38" y="45" fill="var(--ink-soft)" font-family="var(--sans)" font-size="8">Configure</text>
+      <rect x="14" y="58" width="126" height="20" rx="5" fill="var(--card)" stroke="var(--line)" stroke-width="1" />
+      <circle cx="26" cy="68" r="4" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.1" />
+      <text x="38" y="71" fill="var(--ink-soft)" font-family="var(--sans)" font-size="8">Approve</text>
+      <rect x="14" y="84" width="126" height="20" rx="5" fill="var(--card)" stroke="var(--line)" stroke-width="1" />
+      <circle cx="26" cy="94" r="4" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.1" />
+      <text x="38" y="97" fill="var(--ink-soft)" font-family="var(--sans)" font-size="8">Route</text>
+      {/* renamed → */}
+      <text x="150" y="61" fill="var(--accent)" font-family="var(--sans)" font-size="6.5" font-weight="600" letter-spacing="0.09em">RENAME</text>
+      <path d="M148 68 H178" stroke="var(--accent)" stroke-width="2" marker-end="url(#rv-bp-arr)" />
+      {/* AI · skill — same work, agent runs end to end */}
+      <text x="186" y="22" fill="var(--accent)" font-family="var(--sans)" font-size="7.5" font-weight="600" letter-spacing="0.09em">AI · SKILL</text>
+      <rect x="186" y="32" width="120" height="44" rx="10" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.3" />
+      <path d="M205 45 L199 58 L206 58 L202 69 L214 53 L207 53 Z" fill="var(--accent)" />
+      <text x="222" y="59" fill="var(--accent)" font-family="var(--sans)" font-size="14" font-weight="700">SKILL</text>
+      <circle cx="200" cy="94" r="4" fill="var(--accent)" />
+      <circle cx="228" cy="94" r="4" fill="var(--accent)" />
+      <circle cx="256" cy="94" r="4" fill="var(--accent)" />
+      <circle cx="284" cy="94" r="4" fill="var(--accent)" />
+      <path d="M204 94 H224 M232 94 H252 M260 94 H280" stroke="var(--accent-soft)" stroke-width="1.5" />
+      {/* caption */}
+      <text x="14" y="126" fill="var(--ink-faint)" font-family="var(--sans)" font-size="7.5" letter-spacing="0.03em">same unit of work — a process a human follows, a skill an agent runs</text>
+      <defs>
+        <marker id="rv-bp-arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="var(--accent)" /></marker>
+      </defs>
+    </svg>
+  )}
+
   {/* fallback for unknown slugs */}
-  {slug !== 'watching-organizations-adopt-ai' && slug !== 'digital-worker' && slug !== 'understand-before-automate' && slug !== 'operational-memory' && slug !== 'ai-deployment-model' && slug !== 'digital-twin' && (
+  {slug !== 'watching-organizations-adopt-ai' && slug !== 'digital-worker' && slug !== 'understand-before-automate' && slug !== 'operational-memory' && slug !== 'ai-deployment-model' && slug !== 'digital-twin' && slug !== 'business-processes-vs-ai-skills' && (
     <svg viewBox="0 0 320 160" fill="none" class="rv-svg">
       <rect width="320" height="160" fill="var(--paper-2)" />
       <rect x="110" y="50" width="100" height="60" rx="6" fill="var(--card)" stroke="var(--line)" stroke-width="1" />
