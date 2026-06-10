@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FollowStrip from '../components/FollowStrip.astro';
-import PersonPlaceholder from '../components/PersonPlaceholder.astro';
+import AuthorPhoto from '../components/AuthorPhoto.astro';
 import { t, essayPath } from '../i18n';
 import { essayTitle, essayDescription } from '../i18n/essay-meta';
 
@@ -20,9 +20,7 @@ const titleParts = copy.index.title.split(copy.index.titleEmphasis);
 <BaseLayout title={copy.meta.indexTitle} locale="en">
   <div id="top" class="wrap">
     <header class="mast mast--author">
-      <div class="author-thumb">
-        <PersonPlaceholder size="thumb" />
-      </div>
+      <AuthorPhoto />
       <div class="eyebrow">{copy.index.eyebrow}</div>
       <h1>
         {titleParts[0]}<em>{copy.index.titleEmphasis}</em>{titleParts[1] ?? ''}

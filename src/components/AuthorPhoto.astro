@@ -1,0 +1,27 @@
+---
+// Square portrait for circular frames. Undo: set PHOTO_SRC to /images/dwayne-locke-featured.jpg
+// and restore object-position 42% 22% on .author-thumb img and .pub-featured-photo img in global.css.
+const PHOTO_SRC = '/images/dwayne-locke-portrait.jpg';
+
+interface Props {
+  variant?: 'thumb' | 'featured';
+  alt?: string;
+  loading?: 'eager' | 'lazy';
+}
+const {
+  variant = 'thumb',
+  alt = 'Dwayne Locke',
+  loading = 'eager',
+} = Astro.props;
+const className = variant === 'featured' ? 'pub-featured-photo' : 'author-thumb';
+---
+<div class={className}>
+  <img
+    src={PHOTO_SRC}
+    alt={alt}
+    width="800"
+    height="800"
+    loading={loading}
+    decoding="async"
+  />
+</div>

@@ -9,6 +9,10 @@ const essays = defineCollection({
     description: z.string(),
     titleEs: z.string().optional(),
     descriptionEs: z.string().optional(),
+    // Optional: the phrase within `title` to render in rust italic (matches the homepage hero).
+    // Must appear verbatim in `title` / `titleEs`. e.g. title "...adopt AI." + titleEmphasis "adopt AI".
+    titleEmphasis: z.string().optional(),
+    titleEmphasisEs: z.string().optional(),
     pubDate: z.coerce.date(),
     // NOTE: the URL slug comes from the filename (e.g. my-essay.md -> /essays/my-essay).
     // `slug` is reserved by Astro, so don't add it to frontmatter.

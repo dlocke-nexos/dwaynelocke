@@ -1,9 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AuthorPhoto from '../../../components/AuthorPhoto.astro';
 import FollowStrip from '../../../components/FollowStrip.astro';
 import { t } from '../../../i18n';
-import { essayTitle, essayDescription } from '../../../i18n/essay-meta';
+import { essayTitle, essayDescription, essayEmphasis } from '../../../i18n/essay-meta';
 import { getEssayBody } from '../../../lib/essays';
 
 export async function getStaticPaths() {
@@ -22,12 +23,24 @@ const dateStr = entry.data.pubDate.toLocaleDateString('es-ES', {
   month: 'long',
   day: 'numeric',
 });
+const title = essayTitle(entry.data, 'es');
+const emphasis = essayEmphasis(entry.data, 'es');
+const titleParts = emphasis ? title.split(emphasis) : [title];
 ---
-<BaseLayout title={`${essayTitle(entry.data, 'es')} — Dwayne Locke`} description={essayDescription(entry.data, 'es')} locale="es">
-  <article class="wrap essay" style="border-top:none">
-    <div class="essay-tag">{copy.essay.tag}</div>
-    <h1 class="essay-title">{essayTitle(entry.data, 'es')}</h1>
-    <div class="meta">{copy.essay.byline} · {dateStr}</div>
+<BaseLayout title={`${title} — Dwayne Locke`} description={essayDescription(entry.data, 'es')} locale="es">
+  <div class="wrap">
+    <header class="mast mast--author">
+      <AuthorPhoto />
+      <div class="eyebrow">{copy.index.eyebrow}</div>
+      <h1>
+        {titleParts[0]}{emphasis && <em>{emphasis}</em>}{titleParts[1] ?? ''}
+      </h1>
+      <p class="standfirst">{essayDescription(entry.data, 'es')}</p>
+      <p class="byline">{copy.essay.byline} · {dateStr}</p>
+    </header>
+  </div>
+
+  <article class="wrap essay">
     <Content />
     <a href="/es/#essays" class="backlink">{copy.essay.backLink}</a>
   </article>

@@ -4,7 +4,7 @@ import FieldNotes from './FieldNotes.astro';
 import HeroCollage from './HeroCollage.astro';
 import ExploreVisual from './ExploreVisual.astro';
 import ResearchVisual from './ResearchVisual.astro';
-import PersonPlaceholder from './PersonPlaceholder.astro';
+import AuthorPhoto from './AuthorPhoto.astro';
 import FrameworkTeaserVisual from './FrameworkTeaserVisual.astro';
 import {
   t,
@@ -74,7 +74,7 @@ const research = all.filter((e) => e.data.showInResearch !== false).slice(0, 6);
         </svg>
       </div>
       <div class="pub-photo-wrap">
-        <PersonPlaceholder size="featured" />
+        <AuthorPhoto variant="featured" />
       </div>
       <div class="pub-featured-thumb-tag">{copy.home.introduction}</div>
     </div>
