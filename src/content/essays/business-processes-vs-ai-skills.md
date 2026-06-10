@@ -1,26 +1,42 @@
 ---
-title: "Business processes in SaaS, skills in AI"
-description: "Workday calls them business processes. Salesforce calls them permissions. Build an AI operation and the same unit becomes a skill — and the rename marks the shift from software that documents work to software that does it."
-titleEs: "Procesos de negocio en el SaaS, habilidades en la IA"
-descriptionEs: "Workday los llama procesos de negocio. Salesforce los llama permisos. Cuando construyes una operación de IA, la misma unidad se convierte en una habilidad — y el cambio de nombre marca el paso de un software que documenta el trabajo a uno que lo ejecuta."
-titleEmphasis: "skills in AI"
-titleEmphasisEs: "habilidades en la IA"
+title: "Software captured what your business does. AI forces the how."
+description: "For years, software made companies write down what work happens and who does it. AI forces the part everyone left in their heads — how — and that quietly changes who does the work."
+titleEs: "El software capturó lo que hace tu empresa. La IA fuerza el cómo."
+descriptionEs: "Durante años, el software obligó a las empresas a escribir qué trabajo ocurre y quién lo hace. La IA fuerza la parte que todos dejaban en su cabeza — el cómo — y eso cambia silenciosamente quién hace el trabajo."
+titleEmphasis: "the how"
+titleEmphasisEs: "el cómo"
 pubDate: 2026-06-09
 draft: false
 order: 8
 ---
 
-I've spent the last few weeks modeling my own company inside Notion — functional areas like Marketing and Sales, the roles that sit inside each one, the processes each role owns, broken down step by step. If you've ever configured Workday or Salesforce, the shape is familiar. Software made us write the org down this way long before AI showed up: a business process here, a permission there, an approval routed to a role. SaaS forced a generation of companies to formalize two things — *what* work happens, and *who* is allowed to do it.
+Every company already knows what it does and who does it.
 
-The model is good. I'm not throwing it out. But the moment I started building agents on top of it, I hit the wall it always quietly left standing.
+You have departments. Roles. Somewhere there's a list of the process steps to follow, even if that list only lives in someone's head. When you bought software to run the business — accounting, CRM, HR — it made you write some of that down. What work happens. Who's allowed to do it. The system needed it in writing via system requirements before it would run correctly.
 
-A form and a routing rule assume something they never say out loud: that whoever receives the task already knows how to do it. "Approve the invoice" works as a process step because a human approver carries years of unwritten judgment about what a good invoice looks like. The org chart captures the *what* and the *who*, and lets the *how* stay in people's heads. That was fine — efficient, even — as long as people were the ones doing the work.
+That covered two questions. The what, and the who. It quietly skipped a third: how the work actually gets done.
 
-Now the agent does the work. And it carries none of that. Hand it "approve the invoice" and it effectively asks, *approve it how?* No tacit knowledge, no muscle memory, no manager leaning over to say "no, we don't do it like that here." Everything that used to live between the lines of a process has to be on the line. The SOP — the actual method — stops being optional.
+The how never had to be written down, because a person was always doing the work. A good employee carries it — the judgment, the "we don't do it that way here," the hundred small calls that make a task come out right. The org chart points to that person. It never explains them.
 
-That's the part I didn't see coming. SaaS forced the *what* and the *who*. AI forces the *how*. Same pressure, one layer down, and just as relentless: you don't get to hand work to an agent and skip the documentation any more than you got to run payroll in Workday without configuring the process. The tool won't let you stay vague.
+Then you hand a piece of that work to AI.
 
-Here's where it gets uncomfortable. That *how* — the best practice, the right way to do the step — was a huge part of what middle management actually was. Not the org-chart cartoon of approvals and status meetings, but the real job: holding the accumulated "this is how we do it" in your head, distributing it downward, correcting the work, transmitting judgment. A widely shared argument about the future of work makes the point sharply: middle management was largely an information-routing layer, and once a system can hold the whole picture, that layer thins.
+## An agent shows up with no judgment
+
+Give a person "approve this invoice" and they know what a good one looks like. They've seen a thousand. Give the same task to an AI agent and it has none of that. No instinct. No history. No manager glancing over to catch the mistake.
+
+So it has to be spelled out. Every step. Every exception. The part that used to live between the lines now has to be on the page.
+
+That page has a name. A standard operating procedure — an SOP. The how, written down.
+
+> Software made you write down what your business does and who does it. AI makes you write down how.
+
+And it isn't optional, the same way the old systems weren't. You couldn't switch accounting platforms without first defining the process. You can't hand work to an agent without first describing how that work is really done. The tool won't accept a shrug.
+
+## The org chart starts to shift
+
+Think about what a good manager actually did. Set aside the meetings. The real job was holding "this is how we do it" and passing it down — training, correcting, keeping the standard. Much of that was simply carrying know-how from one head to another.
+
+Write that know-how down and it stops belonging to one person. It becomes something the business owns. And once it's on paper, it no longer has to travel down a chain of command. It can go to many agents at once, each doing the job the exact way you defined it.
 
 <figure class="essay-figure">
 <svg viewBox="0 0 680 420" role="img" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;border-radius:14px;border:0.5px solid var(--line)">
@@ -41,12 +57,31 @@ Here's where it gets uncomfortable. That *how* — the best practice, the right 
 <figcaption>The copilot trap bolts a model onto every box of the existing hierarchy — the <em>what</em> and the <em>who</em> — and gets a faster version of the same structure. The alternative writes the <em>how</em> into a shared memory of SOPs and distributes it out to agents.</figcaption>
 </figure>
 
-Write the SOPs down and something shifts. The best practices stop living in individual heads and start living in a shared memory. Then they're distributed *out* — not down a hierarchy, but across a fleet of agents, each performing the step the exact way you specified. The coordination that used to require a manager becomes a property of the memory itself. It's the "company as intelligence" idea: a continuously updated model of how the business actually works, doing the alignment and routing that people used to do by hand.
+The coordination a layer of managers used to provide becomes part of the system itself.
 
-Which raises the obvious question: where do the people go? Not away — up a layer. When the agent does the doing, the most valuable human work becomes authoring and orchestrating the *how*: writing the SOPs, curating the memory, deciding what "good" means and keeping it current as the business changes. The growth role in this workforce isn't the doer; it's the person who teaches the hive — the SOP writer, the process owner, the one who turns tacit judgment into something an agent can run. The human workforce moves from performing the steps to defining and maintaining how the steps get performed.
+## So what do the people do?
 
-So my own model gains a layer. It used to be Functional Area → Role → Process: the *what* and the *who*. Now there's a third thing underneath, and it's the one with the leverage — the SOP, the *how*, the operating memory the agents draw from. The org chart told you the structure. The SOP is what actually runs.
+They move up a level.
 
-I want to be careful not to oversell this. The hierarchy doesn't evaporate, and not everything can be written down — some judgment is genuinely tacit, and pretending otherwise is how you ship confident nonsense at scale. The honest version is narrower: AI moves the bottleneck. With SaaS, the forcing work was formalizing the *what* and the *who*. With agents, it's the *how* — and the people who can write it down.
+When the agent does the doing, the work worth paying for becomes deciding and writing the how:
 
-Which is why most AI adoption I see is aimed at the wrong layer. Bolt a model onto each box of the existing org chart and you get a faster version of the same structure — a copilot for the hierarchy. The leverage isn't there. It's in the part the org chart always skipped. If you're serious about handing work to agents, the work is writing down how the work is actually done, and staffing people to keep writing it. That's the SOP layer. That's what AI is finally forcing — and, for once, the documentation pays for itself the moment something else can read it.
+- Setting the standard — what "good" looks like
+- Putting it in words an agent can follow
+- Keeping it current as the business changes
+- Handling the exceptions the rules don't cover
+
+The job stops being the task. It becomes owning how the task gets done. Some of your sharpest people will spend their days writing and sharpening the playbook the agents run on.
+
+## One honest caution
+
+None of this happens overnight, and not everything can be captured. Some judgment is genuinely hard to put into words, and a company that pretends otherwise will just automate its mistakes faster.
+
+So the claim is a narrow one. The hard part used to be deciding what the business does and who does it. Now the hard part is the how — and finding the people who can write it down well.
+
+## The mistake most teams are about to make
+
+Most companies are aiming AI at the wrong place. They bolt it onto the org chart, box by box, and get a slightly faster version of what they already had.
+
+The real gain isn't there. It's in the part the chart always left out — the how. Letting AI do real work means writing down how the business actually runs, and putting good people on keeping it written.
+
+It's the least glamorous project on the list. It may also be the one that decides whether AI does real work in your business, or just makes the old structure move a little faster.
