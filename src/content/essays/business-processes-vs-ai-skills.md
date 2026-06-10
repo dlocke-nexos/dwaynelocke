@@ -14,9 +14,9 @@ Years of Workday rollouts taught me a rule you can't dodge: nothing goes live un
 
 I'd half-forgotten that rule. Then I started handing my own work to AI agents, and hit the same wall one layer down.
 
-Every company already knows what it does and who does it.
+It's a gap every company already lives with, and rarely notices, because the first half is covered.
 
-You have departments. Roles. Somewhere there's a list of the process steps to follow, even if that list only lives in someone's head. When you bought software to run the business — accounting, CRM, HR — it made you write some of that down. What work happens. Who's allowed to do it. The system needed it written down as requirements before it would run.
+You know what your business does, and who does it. Departments. Roles. Somewhere a list of the steps to follow, even if that list only lives in someone's head. When you bought software to run the business — accounting, CRM, HR — it made you write some of that down. What work happens. Who's allowed to do it. The system needed it written down as requirements before it would run.
 
 That covered two questions. The what, and the who. It quietly skipped a third: how the work actually gets done.
 
