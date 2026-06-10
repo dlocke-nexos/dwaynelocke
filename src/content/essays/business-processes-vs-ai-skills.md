@@ -10,15 +10,19 @@ draft: false
 order: 8
 ---
 
+Years of Workday rollouts taught me a rule you can't dodge: nothing goes live until the process is written down. Every step, every approval, defined before the system will run.
+
+I'd half-forgotten that rule. Then I started handing my own work to AI agents, and hit the same wall one layer down.
+
 Every company already knows what it does and who does it.
 
-You have departments. Roles. Somewhere there's a list of the process steps to follow, even if that list only lives in someone's head. When you bought software to run the business — accounting, CRM, HR — it made you write some of that down. What work happens. Who's allowed to do it. The system needed it in writing via system requirements before it would run correctly.
+You have departments. Roles. Somewhere there's a list of the process steps to follow, even if that list only lives in someone's head. When you bought software to run the business — accounting, CRM, HR — it made you write some of that down. What work happens. Who's allowed to do it. The system needed it written down as requirements before it would run.
 
 That covered two questions. The what, and the who. It quietly skipped a third: how the work actually gets done.
 
 The how never had to be written down, because a person was always doing the work. A good employee carries it — the judgment, the "we don't do it that way here," the hundred small calls that make a task come out right. The org chart points to that person. It never explains them.
 
-Then you hand a piece of that work to AI.
+Then you hand a piece of that work to an agent.
 
 ## An agent shows up with no judgment
 
@@ -30,7 +34,7 @@ That page has a name. A standard operating procedure — an SOP. The how, writte
 
 > Software made you write down what your business does and who does it. AI makes you write down how.
 
-And it isn't optional, the same way the old systems weren't. You couldn't switch accounting platforms without first defining the process. You can't hand work to an agent without first describing how that work is really done. The tool won't accept a shrug.
+And it isn't optional, the same way the old systems weren't. You couldn't go live on a new platform without first defining the process. You can't hand work to an agent without first describing how that work is really done. The tool won't accept a shrug.
 
 ## The org chart starts to shift
 
@@ -70,18 +74,20 @@ When the agent does the doing, the work worth paying for becomes deciding and wr
 - Keeping it current as the business changes
 - Handling the exceptions the rules don't cover
 
-The job stops being the task. It becomes owning how the task gets done. Some of your sharpest people will spend their days writing and sharpening the playbook the agents run on.
+The job stops being the task. It becomes owning how the task gets done. Your strongest operators will spend their days writing and sharpening the playbook the agents run on.
 
 ## One honest caution
 
 None of this happens overnight, and not everything can be captured. Some judgment is genuinely hard to put into words, and a company that pretends otherwise will just automate its mistakes faster.
 
-So the claim is a narrow one. The hard part used to be deciding what the business does and who does it. Now the hard part is the how — and finding the people who can write it down well.
+So the claim is a narrow one. The hard part used to be deciding what the business does and who does it. Now the hard part is the how — and finding the employees who can write it down well.
 
 ## The mistake most teams are about to make
 
 Most companies are aiming AI at the wrong place. They bolt it onto the org chart, box by box, and get a slightly faster version of what they already had.
 
-The real gain isn't there. It's in the part the chart always left out — the how. Letting AI do real work means writing down how the business actually runs, and putting good people on keeping it written.
+The real gain isn't there. It's in the part the chart always left out — the how. Letting AI do real work means writing down how the business actually runs, and putting your best people on keeping it written.
 
-It's the least glamorous project on the list. It may also be the one that decides whether AI does real work in your business, or just makes the old structure move a little faster.
+It's the least glamorous project on the list. It's also the one I'm spending my own time on right now, building my own operation this way: writing down how the work gets done, so something else can run it.
+
+The bottleneck was never the software. It isn't the agents either. It's the how. I'm still working it out in the open — and if you're handing real work to agents, that's the part worth getting right.
